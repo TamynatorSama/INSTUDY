@@ -15,21 +15,7 @@ class _SearchPageState extends State<SearchPage> {
   bool hasRecent = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "INSTUDY",
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          elevation: 1,
-          scrolledUnderElevation: 0,
-          shadowColor: AppColors.accentColor,
-          actions: [
-            SvgPicture.asset("assets/icons/notification.svg"),
-            const Gap(24),
-          ],
-        ),
-        body: ListView(
+    return  ListView(
           children: [
             const Gap(24),
             Column(
@@ -144,7 +130,7 @@ class _SearchPageState extends State<SearchPage> {
               ],
             )
           ],
-        ));
+        );
   }
 }
 
