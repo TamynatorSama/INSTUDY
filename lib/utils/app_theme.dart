@@ -9,6 +9,8 @@ class AppTheme {
         splashColor: Colors.transparent,
         dividerColor: AppColors.dividerColor,
         appBarTheme: const AppBarTheme(
+          foregroundColor: Colors.white,
+          elevation: 1,
             scrolledUnderElevation: 0, backgroundColor: Colors.white),
         dividerTheme: const DividerThemeData(
             thickness: 1, space: 0, color: Color(0xffEBEBEB)),
