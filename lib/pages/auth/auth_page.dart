@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:instudy/models/courses_model.dart';
 import 'package:instudy/provider/course_provider.dart';
 import 'package:instudy/repo/auth_repo.dart';
 import 'package:instudy/routing_page.dart';
@@ -29,28 +30,32 @@ class _AuthPageState extends State<AuthPage>
   final _semesterController = MultiSelectController<String>();
   final _coursesController = MultiSelectController<String>();
   bool showCourses = false;
+  // bool isFirst = true;
 
   @override
   void initState() {
     super.initState();
+    _controller = TabController(length: 2, vsync: this);
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      _semesterController.addListener(() => setState(() {
+      _semesterController.addListener(updater);
+      _controller.addListener(() => setState(() {
             showCourses = _semesterController.selectedItems.isNotEmpty;
           }));
       context.read<CourseProvider>().fetchCourses(context: context);
     });
-    _controller = TabController(length: 2, vsync: this);
-    _controller.addListener(() => setState(() {
-          showCourses = _semesterController.selectedItems.isNotEmpty;
-        }));
+  }
+
+  updater() {
+    showCourses = _semesterController.selectedItems.isNotEmpty;
+    Future.delayed(Duration.zero, () {
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
-    _semesterController.removeListener(() => setState(() {
-          showCourses = _semesterController.selectedItems.isNotEmpty;
-        }));
+    _semesterController.removeListener(updater);
     _controller.removeListener(() => setState(() {
           showCourses = _semesterController.selectedItems.isNotEmpty;
         }));
@@ -202,7 +207,7 @@ class _AuthPageState extends State<AuthPage>
                                   return;
                                 }
                                 await AuthRepo().validateUser(
-                                    email: emailController.text.trim());
+                                    email: emailController.text.trim().toLowerCase());
                               },
                             )
                           ],
@@ -276,24 +281,26 @@ class _AuthPageState extends State<AuthPage>
                                       .toList();
                                 }),
                                 onSelectionChange: (val) {
-                                  _coursesController.clearAll();
-                          print(context.read<CourseProvider>()
-                                      .courses
-                                      .where((e) =>
-                                          e.semesterType ==
-                                          val.first.toLowerCase()));
-                                  _coursesController.setItems(context
-                                      .read<CourseProvider>()
-                                      .courses
-                                      .where((e) =>
-                                          e.semesterType ==
-                                          val.first.toLowerCase())
-                                      .map((e) => DropdownItem(
-                                          label: e.name, value: e.id))
-                                      .toList());
+                                  Future.delayed(Duration.zero, () {
+                                    _coursesController.clearAll();
+
+                                    List<Course> courses = context
+                                        .read<CourseProvider>()
+                                        .courses
+                                        .where((e) =>
+                                            e.semesterType ==
+                                            (val.firstOrNull ?? "")
+                                                .toLowerCase())
+                                        .toList();
+
+                                    _coursesController.setItems(courses
+                                        .map((e) => DropdownItem(
+                                            label: e.name, value: e.id))
+                                        .toList());
+                                  });
                                 },
                                 dropdownDecoration: const DropdownDecoration(
-                                    marginTop: 10,
+                                    marginTop: 5,
                                     elevation: 2,
                                     maxHeight: 200),
                                 fieldDecoration: FieldDecoration(
@@ -357,7 +364,7 @@ class _AuthPageState extends State<AuthPage>
                                 }
                                 await AuthRepo()
                                     .signUp(
-                                        email: emailController.text.trim(),
+                                        email: emailController.text.trim().toLowerCase(),
                                         courses: _coursesController
                                             .selectedItems
                                             .map((e) => e.value)
