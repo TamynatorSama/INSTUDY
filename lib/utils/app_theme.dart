@@ -6,6 +6,7 @@ class AppTheme {
   static ThemeData get lightTheme => ThemeData(
         scaffoldBackgroundColor: Colors.white,
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
+      
         splashColor: Colors.transparent,
         dividerColor: AppColors.dividerColor,
         appBarTheme: const AppBarTheme(

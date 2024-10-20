@@ -24,8 +24,7 @@ class AppNetworkRequest {
   // static final AppNetworkRequest _shared = AppNetworkRequest._sharedInstance();
   // factory AppNetworkRequest.instance() = _shared;
   // AppNetworkRequest._sharedInstance();
-  static const String _baseUrl =
-      "https://66827f3b97dd0dc371c1.appwrite.global/";
+  static const String _baseUrl = "http://51.20.109.163:6004/api/v1/";
 
   // AppNetworkRequest({required this.ref});
 
@@ -35,8 +34,6 @@ class AppNetworkRequest {
     ));
     _dioClient.options.headers = {"Content-Type": "application/json"};
   }
-
-  
 
   Future<AppHttpResponse> makeRequest(String url,
       {HttpRequestType requestType = HttpRequestType.get,
@@ -84,7 +81,7 @@ class AppNetworkRequest {
       {Map<String, dynamic>? payload}) async {
     try {
       final response = await _dioClient.get(url, data: payload);
-      // print(response.data);
+      print(response.data);
       return SuccessResponse(
           result: response.data,
           message: response.statusMessage ?? "Request successful");
@@ -119,11 +116,11 @@ class AppNetworkRequest {
 
       return ErrorResponse(
           result: {},
-          message: e.response?.statusMessage ?? "Failed to preocess request");
+          message: e.response?.statusMessage ?? "Failed to process request");
     } on SocketException catch (e) {
       return ErrorResponse(result: {}, message: e.message);
     } catch (e) {
-      return ErrorResponse(result: {}, message: "Failed to preocess request");
+      return ErrorResponse(result: {}, message: "Failed to process request");
     }
   }
 }

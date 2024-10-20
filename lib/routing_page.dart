@@ -5,6 +5,7 @@ import 'package:instudy/pages/bookmark/bookmark.dart';
 import 'package:instudy/pages/course_listing/course_listing.dart';
 import 'package:instudy/pages/profile/profile_page.dart';
 import 'package:instudy/pages/search/search_page.dart';
+import 'package:instudy/pages/videos/class_video.dart';
 import 'package:instudy/utils/app_colors.dart';
 import 'package:instudy/utils/navigator_controller.dart';
 
@@ -33,7 +34,7 @@ class RoutingPage extends StatelessWidget {
           const Gap(20),
         ],
       ),
-            body: const [CourseContentListing(),SearchPage(),BookmarkPage(),Column(),ProfilePage()][navController.selectedIndex],
+            body: const [CourseContentListing(),SearchPage(),BookmarkPage(),ClassVideoPage(),ProfilePage()][navController.selectedIndex],
             bottomNavigationBar: Padding(
               padding: EdgeInsets.only(
                   top: 20, bottom: MediaQuery.paddingOf(context).bottom + 20,right: 20,left: 20),

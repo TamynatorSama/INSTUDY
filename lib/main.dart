@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:instudy/pages/bookmark/bookmark.dart';
-import 'package:instudy/pages/profile/profile_page.dart';
-import 'package:instudy/routing_page.dart';
+import 'package:flutter/services.dart';
+import 'package:instudy/pages/splash_screen.dart';
+import 'package:instudy/provider/course_provider.dart';
+import 'package:instudy/repo/auth_repo.dart';
 import 'package:instudy/utils/app_theme.dart';
+import 'package:instudy/utils/local_storage.dart';
+import 'package:provider/provider.dart';
+import 'package:instudy/utils/network_request_helper/dio_base.dart';
 
 void main() {
-  runApp(const MainApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  Storage.initStorage();
+  AuthRepo.initApp();
+  AppNetworkRequest.init();
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+        create: (context) => CourseProvider(),
+        
+      ),
+  ],child: const MainApp(),));
 }
 
 class MainApp extends StatelessWidget {
@@ -16,7 +33,8 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const RoutingPage(),
+      home: const SplashScreen()
+      // home: const RoutingPage(),
     );
   }
 }

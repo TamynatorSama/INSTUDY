@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:instudy/pages/course_listing/course_holder.dart';
+import 'package:instudy/pages/videos/class_video_single_view.dart';
 import 'package:instudy/utils/app_colors.dart';
 
 class ClassVideoPage extends StatefulWidget {
@@ -14,21 +15,7 @@ class ClassVideoPage extends StatefulWidget {
 class _ClassVideoPageState extends State<ClassVideoPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "INSTUDY",
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          elevation: 1,
-          scrolledUnderElevation: 0,
-          shadowColor: AppColors.accentColor,
-          actions: [
-            SvgPicture.asset("assets/icons/notification.svg"),
-            const Gap(24),
-          ],
-        ),
-        body: Column(
+    return Column(
           children: [
             const Gap(24),
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -124,52 +111,55 @@ class _ClassVideoPageState extends State<ClassVideoPage> {
                 itemBuilder: (context,index)=>_buildClassVideoHolder(context))
             ),
           ],
-        ));
+        );
   }
 }
 
-Widget _buildClassVideoHolder(BuildContext context) => Padding(
-  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-  child: Row(
-    children: [
-      Container(
-        height: 100,
-        width: 100,
-        
-        decoration: ShapeDecoration(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),color: AppColors.accentColor),
-      ),
-      const Gap(13),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("MET 101",style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 10,color: AppColors.textColorDark2),),
-            const Gap(4),
-            Text("Hardness of Materials",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.displayMedium,),
-            const Gap(4),
-             Text("Full Class Video",
-             
-             style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 10,color: AppColors.textColorDark2),),
-             const Gap(16),       
-            Wrap(
-                                    spacing: 10,
-                                    children: [
-                                      videoInfo(context,
-                                          icon: "assets/icons/small_user.svg",
-                                          value: "Prof. john"),
-                                      videoInfo(context,
-                                          icon:
-                                              "assets/icons/small_video_camera.svg",
-                                          value: "1 of 5"),
-                                      videoInfo(context, value: "5 hours ago"),
-                                    ],
-                                  )
-          ],
+Widget _buildClassVideoHolder(BuildContext context) => InkWell(
+  onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>const ClassVideoSingleView())),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    child: Row(
+      children: [
+        Container(
+          height: 100,
+          width: 100,
+          
+          decoration: ShapeDecoration(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),color: AppColors.accentColor),
         ),
-      )
-    ],
+        const Gap(13),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("MET 101",style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 10,color: AppColors.textColorDark2),),
+              const Gap(4),
+              Text("Hardness of Materials",
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.displayMedium,),
+              const Gap(4),
+               Text("Full Class Video",
+               
+               style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 10,color: AppColors.textColorDark2),),
+               const Gap(16),       
+              Wrap(
+                                      spacing: 10,
+                                      children: [
+                                        videoInfo(context,
+                                            icon: "assets/icons/small_user.svg",
+                                            value: "Prof. john"),
+                                        videoInfo(context,
+                                            icon:
+                                                "assets/icons/small_video_camera.svg",
+                                            value: "1 of 5"),
+                                        videoInfo(context, value: "5 hours ago"),
+                                      ],
+                                    )
+            ],
+          ),
+        )
+      ],
+    ),
   ),
 );
