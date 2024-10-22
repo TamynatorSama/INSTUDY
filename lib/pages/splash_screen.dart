@@ -3,6 +3,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instudy/pages/auth/auth_page.dart';
 import 'package:instudy/provider/course_provider.dart';
+import 'package:instudy/repo/auth_repo.dart';
+import 'package:instudy/routing_page.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -67,7 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 onEnd: () {
                   Future.delayed(const Duration(milliseconds: 500), () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) =>const AuthPage()));
+                        builder: (context) =>AuthRepo.token ==null? const AuthPage():const RoutingPage()));
                   });
                 },
                 duration: const Duration(milliseconds: 1500),

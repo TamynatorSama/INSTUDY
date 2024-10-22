@@ -10,6 +10,7 @@ class ExpandableScrollableWidget extends StatelessWidget {
       LayoutBuilder(builder: (context, layout) {
         return SingleChildScrollView(
           physics: physics,
+          padding: EdgeInsets.zero,
           child: IntrinsicHeight(
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: layout.maxHeight),

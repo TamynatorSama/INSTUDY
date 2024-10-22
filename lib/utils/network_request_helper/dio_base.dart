@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:instudy/repo/auth_repo.dart';
 import 'package:instudy/utils/enums.dart';
 import 'package:instudy/utils/loader_controller.dart';
 import 'package:instudy/utils/network_request_helper/interceptor/token_interceptor.dart';
@@ -40,9 +41,9 @@ class AppNetworkRequest {
       Map<String, dynamic>? payload,
       bool showLoader = true,
       String? baseUrl}) async {
-    if (!_dioClient.interceptors.any((e) => e is TokenInterceptor)) {
-      // _dioClient.interceptors
-      //     .add(TokenInterceptor(AuthRepository.token?? ""));
+    if (!_dioClient.interceptors.any((e) => e is TokenInterceptor) &&
+        AuthRepo.token != null) {
+      _dioClient.interceptors.add(TokenInterceptor(AuthRepo.token ?? ""));
     }
     // context.read();
     // if (showLoader) {
@@ -86,9 +87,10 @@ class AppNetworkRequest {
           result: response.data,
           message: response.statusMessage ?? "Request successful");
     } on DioException catch (e) {
+      print(e.response?.data);
       return ErrorResponse(
           result: {},
-          message: e.response?.statusMessage ?? "Failed to process request");
+          message: e.response?.data["message"] ?? "Failed to process request");
     } on SocketException catch (e) {
       return ErrorResponse(result: {}, message: e.message);
     } catch (e) {
@@ -116,7 +118,7 @@ class AppNetworkRequest {
 
       return ErrorResponse(
           result: {},
-          message: e.response?.statusMessage ?? "Failed to process request");
+          message: e.response?.data["message"] ?? "Failed to process request");
     } on SocketException catch (e) {
       return ErrorResponse(result: {}, message: e.message);
     } catch (e) {

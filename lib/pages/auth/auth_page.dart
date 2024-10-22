@@ -206,8 +206,24 @@ class _AuthPageState extends State<AuthPage>
                                 if (!_formState.currentState!.validate()) {
                                   return;
                                 }
-                                await AuthRepo().validateUser(
-                                    email: emailController.text.trim().toLowerCase());
+                                await AuthRepo()
+                                    .validateUser(
+                                        email: emailController.text
+                                            .trim()
+                                            .toLowerCase())
+                                    .then((value) {
+                                  if (!value.status) {
+                                    showFeedbackSnackbar(context,
+                                        message: value.message);
+                                    return;
+                                  }
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      PageTransition(
+                                          child: const RoutingPage(),
+                                          type: PageTransitionType.leftToRight),
+                                      (_) => false);
+                                });
                               },
                             )
                           ],
@@ -300,9 +316,7 @@ class _AuthPageState extends State<AuthPage>
                                   });
                                 },
                                 dropdownDecoration: const DropdownDecoration(
-                                    marginTop: 5,
-                                    elevation: 2,
-                                    maxHeight: 200),
+                                    marginTop: 5, elevation: 2, maxHeight: 200),
                                 fieldDecoration: FieldDecoration(
                                     border: CustomInputBorders.border,
                                     hintText: "Choose semester",
@@ -364,7 +378,9 @@ class _AuthPageState extends State<AuthPage>
                                 }
                                 await AuthRepo()
                                     .signUp(
-                                        email: emailController.text.trim().toLowerCase(),
+                                        email: emailController.text
+                                            .trim()
+                                            .toLowerCase(),
                                         courses: _coursesController
                                             .selectedItems
                                             .map((e) => e.value)

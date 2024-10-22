@@ -13,12 +13,12 @@ class AuthRepo {
     _email = await Storage.storage.read(key: "email");
   }
 
-  set token(String? token) {
+  static set token(String? token) {
     _token = token;
     Storage.storage.write(key: "token", value: token);
   }
 
-  String? get token {
+  static String? get token {
     return _token;
   }
 
@@ -32,17 +32,19 @@ class AuthRepo {
   }
 
   Future<RepositoryResult<bool>> validateUser({required String email}) async {
-    return await AppNetworkRequest().makeRequest("validate-user",
+    return await AppNetworkRequest().makeRequest("login",
         requestType: HttpRequestType.post,
         payload: {"email": email}).then((val) {
       if (val.isSuccessful) {
+        email = val.result["data"]["email"];
+        token = val.result["data"]["token"];
         return RepositoryResult(
             message: val.result["message"] ?? "Success",
             status: true,
-            result: val.result["data"]["user_exist"]);
+            result: true);
       }
       return RepositoryResult(
-          message: val.result["message"] ?? "Failure",
+          message: val.message,
           status: false,
           result: false);
     });
@@ -51,7 +53,7 @@ class AuthRepo {
   Future<RepositoryResult> signUp(
       {required String email, required List<String> courses}) async {
     return await AppNetworkRequest()
-        .makeRequest("login", requestType: HttpRequestType.post, payload: {
+        .makeRequest("register", requestType: HttpRequestType.post, payload: {
       "email": email,
       "courses": courses.map((e) => {"course_id": e}).toList()
     }).then((val) {
@@ -64,7 +66,7 @@ class AuthRepo {
             result: false);
       }
       return RepositoryResult(
-          message: val.result["message"] ?? "An Error Occurred",
+          message: val.message,
           status: false,
           result: false);
     });

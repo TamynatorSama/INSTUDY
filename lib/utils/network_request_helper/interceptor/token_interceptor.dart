@@ -5,7 +5,7 @@ class TokenInterceptor extends Interceptor {
   const TokenInterceptor(this.token);
   @override
   void onRequest(options, handler) {
-    options.headers.addAll({"Authorization": token});
+    options.headers.addAll({"Authorization": "Bearer $token"});
     return handler.next(options);
   }
 }

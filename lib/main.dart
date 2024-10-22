@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instudy/pages/splash_screen.dart';
 import 'package:instudy/provider/course_provider.dart';
+import 'package:instudy/provider/course_video_listing_provider.dart';
+import 'package:instudy/provider/profile_provider.dart';
 import 'package:instudy/repo/auth_repo.dart';
 import 'package:instudy/utils/app_theme.dart';
 import 'package:instudy/utils/local_storage.dart';
@@ -12,7 +14,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   Storage.initStorage();
   AuthRepo.initApp();
@@ -22,6 +24,15 @@ void main() {
         create: (context) => CourseProvider(),
         
       ),
+    ChangeNotifierProvider(
+        create: (context) => CourseVideoListingProvider(),
+        
+      ),
+      ChangeNotifierProvider(
+        create: (context) => ProfileProvider(),
+        
+      ),
+      
   ],child: const MainApp(),));
 }
 
