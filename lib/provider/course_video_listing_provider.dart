@@ -1,3 +1,5 @@
+// import 'dart:math';
+
 import 'package:cached_video_player_plus/cached_video_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:instudy/models/course_video.dart';
@@ -5,6 +7,7 @@ import 'package:instudy/models/pagination_model.dart';
 import 'package:instudy/models/video_transcript.dart';
 import 'package:instudy/repo/course_video_repo.dart';
 import 'package:instudy/utils/feedback_snackbar.dart';
+// import 'package:instudy/utils/video_player.dart';
 
 class CourseVideoListingProvider extends ChangeNotifier {
   bool isLoading = false;
@@ -15,6 +18,9 @@ class CourseVideoListingProvider extends ChangeNotifier {
   Set<CourseVideo> videos = {};
   PaginationModel? pagination;
   CachedVideoPlayerPlusController? controller;
+  OverlayEntry? entry;
+  bool landScape = false;
+  bool done = true;
 
   final CourseVideoRepo _repo = CourseVideoRepo();
 
@@ -59,6 +65,24 @@ class CourseVideoListingProvider extends ChangeNotifier {
         }
       }
     });
+  }
+
+  Future setLandscape(BuildContext context) async {
+    // landScape = !landScape;
+    // if(context.mounted){
+    //   notifyListeners();
+    // }
+    // if (landScape) {
+    //   entry = OverlayEntry(
+    //       builder: (context) => const Material(
+    //             child: VideoPlayer(),
+                
+    //           ));
+    //   Overlay.of(context).insert(entry!);
+    // } else {
+    //   entry?.remove();
+    // }
+    // done = !landScape;
   }
 
   Future fetchTranscript(BuildContext context,

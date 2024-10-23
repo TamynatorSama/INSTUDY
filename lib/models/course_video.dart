@@ -67,10 +67,10 @@ class CourseVideo {
     );
   }
 
-  factory CourseVideo.fromJson(Map<String, dynamic> json) {
+  factory CourseVideo.fromJson(Map<String, dynamic> json,{Course? course}) {
     return CourseVideo(
       id: json["_id"],
-      course: Course.fromJson(json["course_id"]),
+      course: course ?? Course.fromJson(json["course_id"]),
       file: FileClass.fromJson(json["file"]),
       s3Uri: json["s3_uri"],
       s3Link: json["s3_link"],

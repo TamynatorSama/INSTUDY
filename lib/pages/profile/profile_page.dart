@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:instudy/provider/profile_provider.dart';
-import 'package:instudy/repo/profile_repo.dart';
 import 'package:instudy/utils/app_colors.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';

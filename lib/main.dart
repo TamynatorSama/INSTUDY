@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:instudy/pages/splash_screen.dart';
 import 'package:instudy/provider/course_provider.dart';
 import 'package:instudy/provider/course_video_listing_provider.dart';
+import 'package:instudy/provider/dashboard_provider.dart';
 import 'package:instudy/provider/profile_provider.dart';
 import 'package:instudy/repo/auth_repo.dart';
 import 'package:instudy/utils/app_theme.dart';
@@ -32,6 +33,11 @@ void main() {
         create: (context) => ProfileProvider(),
         
       ),
+      ChangeNotifierProvider(
+        create: (context) => DashboardProvider(),
+        
+      ),
+      
       
   ],child: const MainApp(),));
 }

@@ -44,7 +44,9 @@ class _ClassVideoSingleViewState extends State<ClassVideoSingleView> {
         _containerKey.currentContext!.findRenderObject() as RenderBox;
 
     position = box.localToGlobal(Offset.zero).dy;
-    setState(() {});
+    if(mounted){
+      setState(() {});
+    }
   }
 
   @override
@@ -61,171 +63,153 @@ class _ClassVideoSingleViewState extends State<ClassVideoSingleView> {
       ),
       body: Consumer<CourseVideoListingProvider>(
         builder: (_, ref, __) {
-          return Stack(
-            children: [
-              RefreshIndicator(
-                onRefresh: () async =>
-                    ref.fetchTranscript(context, courseID: widget.course.id),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+          return RefreshIndicator(
+            onRefresh: () async =>
+                ref.fetchTranscript(context, courseID: widget.course.id),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Gap(24),
+                      InkWell(
+                          // visualDensity: VisualDensity.compact,
+                          // style: ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.all(1))),
+                          onTap: () => Navigator.pop(context),
+                          child: const Icon(Icons.arrow_back)),
+                      const Gap(10),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const Gap(24),
-                          InkWell(
-                              // visualDensity: VisualDensity.compact,
-                              // style: ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.all(1))),
-                              onTap: () => Navigator.pop(context),
-                              child: const Icon(Icons.arrow_back)),
-                          const Gap(10),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                widget.course.course.title,
-                                style: Theme.of(context).textTheme.titleSmall,
-                              ),
-                              const Gap(5),
-                              Expanded(
-                                child: Text(
-                                  "Full Class Video",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              )
-                            ],
+                          Text(
+                            widget.course.course.title,
+                            style: Theme.of(context).textTheme.titleSmall,
                           ),
-                          const Gap(7),
-                          Wrap(
-                            spacing: 10,
-                            children: [
-                              videoInfo(context,
-                                  icon: "assets/icons/small_user.svg",
-                                  value: widget.course.course.instructor),
-                              videoInfo(context,
-                                  value: GetTimeAgo.parse(widget.course.createdAt)),
-                            ],
-                          ),
-                          const Gap(20),
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              CircularProgressIndicator(
-                                color: AppColors.textColorDark,
-                              ),
-                              Container(
-                                width: double.maxFinite,
-                                height: MediaQuery.sizeOf(context).height * 0.3,
-                                decoration: ShapeDecoration(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16)),
-                                  color: AppColors.accentColor.withOpacity(0.3),
-                                ),
-                               
-                              ),
-                              // if(_controller.value.)
-                            ],
-                          ),
-                          const Gap(20),
-                          InkWell(
-                            onTap: () {},
+                          const Gap(5),
+                          Expanded(
                             child: Text(
-                              "Audio Transcript",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displayLarge
-                                  ?.copyWith(
-                                    fontSize: 14,
-                                  ),
+                              "Full Class Video",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
-                          ),
-                          const Gap(13),
-                          TextFormField(
-                            decoration: InputDecoration(
-                                filled: true,
-                                prefixIcon: IntrinsicWidth(
-                                  child: Padding(
-                                      padding: const EdgeInsets.all(14),
-                                      child: SvgPicture.asset(
-                                        "assets/icons/search_large.svg",
-                                        width: 24,
-                                      )),
-                                ),
-                                hintText: "Search  Transcript",
-                                contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                // fillColor: Colors.blueAccent,
-                                fillColor: const Color(0xffFAFAFA),
-                                border: OutlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: Colors.transparent),
-                                    borderRadius: BorderRadius.circular(44)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: Colors.transparent),
-                                    borderRadius: BorderRadius.circular(44)),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: Colors.transparent),
-                                    borderRadius: BorderRadius.circular(44)),
-                                errorBorder: OutlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: Colors.transparent),
-                                    borderRadius: BorderRadius.circular(44)),
-                                focusedErrorBorder: OutlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: Colors.transparent),
-                                    borderRadius: BorderRadius.circular(44))),
-                            style: Theme.of(context).textTheme.displayMedium,
-                          ),
+                          )
                         ],
                       ),
-                    ),
-                    const Gap(10),
-                    const Divider(),
-                    const Gap(20),
-                    Expanded(
-                      child: !widget.course.transcriptReady &&
-                              !ref.transcripts.containsKey(widget.course.id) &&
-                              !ref.isLoadingTranscript
-                          ? const ExpandableScrollableWidget(
-                              physics: AlwaysScrollableScrollPhysics(),
-                              child: Center(
-                                child: Text(
-                                  "Transcript for this video is still processing,\n check back later!",
-                                  textAlign: TextAlign.center,
-                                ),
-                              ))
-                          : TranscriptViewer(
-                              course: widget.course,
-                              controller: ref.controller,
+                      const Gap(7),
+                      Wrap(
+                        spacing: 10,
+                        children: [
+                          videoInfo(context,
+                              icon: "assets/icons/small_user.svg",
+                              value: widget.course.course.instructor),
+                          videoInfo(context,
+                              value: GetTimeAgo.parse(widget.course.createdAt)),
+                        ],
+                      ),
+                      const Gap(20),
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            color: AppColors.textColorDark,
+                          ),
+                          Container(
+                            width: double.maxFinite,
+                            height: MediaQuery.sizeOf(context).height * 0.3,
+                            decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16)),
+                              color: AppColors.accentColor.withOpacity(0.3),
                             ),
-                    )
-                  ],
-                ),
-              ),
-              Positioned(
-                top: position,
-                child: Container(
-                                  key: _containerKey,
-                                  width: double.maxFinite,
-                                  height: MediaQuery.sizeOf(context).height * 0.3,
-                                  decoration: ShapeDecoration(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16)),
-                                    
-                                  ),
-                                  child: VideoPlayer(
+                           child: ref.landScape? const Offstage():VideoPlayer(
                                     transcripts: ref.transcripts[widget.course.id],
                                     videoUrl: widget.course.s3Link!,
                                   ),
-                                ),
-              ),
-            ],
+                          ),
+                          // if(_controller.value.)
+                        ],
+                      ),
+                      const Gap(20),
+                      InkWell(
+                        onTap: () {},
+                        child: Text(
+                          "Audio Transcript",
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayLarge
+                              ?.copyWith(
+                                fontSize: 14,
+                              ),
+                        ),
+                      ),
+                      const Gap(13),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            filled: true,
+                            prefixIcon: IntrinsicWidth(
+                              child: Padding(
+                                  padding: const EdgeInsets.all(14),
+                                  child: SvgPicture.asset(
+                                    "assets/icons/search_large.svg",
+                                    width: 24,
+                                  )),
+                            ),
+                            hintText: "Search  Transcript",
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 15),
+                            // fillColor: Colors.blueAccent,
+                            fillColor: const Color(0xffFAFAFA),
+                            border: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.transparent),
+                                borderRadius: BorderRadius.circular(44)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.transparent),
+                                borderRadius: BorderRadius.circular(44)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.transparent),
+                                borderRadius: BorderRadius.circular(44)),
+                            errorBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.transparent),
+                                borderRadius: BorderRadius.circular(44)),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.transparent),
+                                borderRadius: BorderRadius.circular(44))),
+                        style: Theme.of(context).textTheme.displayMedium,
+                      ),
+                    ],
+                  ),
+                ),
+                const Gap(10),
+                const Divider(),
+                const Gap(20),
+                Expanded(
+                  child: !widget.course.transcriptReady &&
+                          !ref.transcripts.containsKey(widget.course.id) &&
+                          !ref.isLoadingTranscript
+                      ? const ExpandableScrollableWidget(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          child: Center(
+                            child: Text(
+                              "Transcript for this video is still processing,\n check back later!",
+                              textAlign: TextAlign.center,
+                            ),
+                          ))
+                      : TranscriptViewer(
+                          course: widget.course,
+                          controller: ref.controller,
+                        ),
+                )
+              ],
+            ),
           );
         },
       ),

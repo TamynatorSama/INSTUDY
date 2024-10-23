@@ -11,12 +11,13 @@ import 'package:easy_debounce/easy_debounce.dart';
 class OverlayControls extends StatefulWidget {
   final CachedVideoPlayerPlusController control;
   final VideoTranscript? transcripts;
+  final Function()? switchToLandScape;
 
-  const OverlayControls({
-    super.key,
-    required this.control,
-    this.transcripts
-  });
+  const OverlayControls(
+      {super.key,
+      required this.control,
+      this.transcripts,
+      this.switchToLandScape});
 
   @override
   State<OverlayControls> createState() => _OverlayControlsState();
@@ -73,11 +74,12 @@ class _OverlayControlsState extends State<OverlayControls>
               GestureDetector(
                 onTap: () {
                   _allControl?.cancel();
-                  setState(() {
-                    showBottom = true;
-                    showAll = true;
-                  });
-
+                  if (mounted) {
+                    setState(() {
+                      showBottom = true;
+                      showAll = true;
+                    });
+                  }
                   // _allControl.call();
 
                   EasyDebounce.debounce(
@@ -85,9 +87,16 @@ class _OverlayControlsState extends State<OverlayControls>
                       const Duration(seconds: 2), // <-- The debounce duration
                       () async {
                     _allControl = Timer(const Duration(seconds: 2), () async {
-                      setState(() => showAll = false);
-                      await Future.delayed(const Duration(seconds: 2),
-                          () => setState(() => showBottom = false));
+                      showAll = false;
+                      if (mounted) {
+                        setState(() {});
+                      }
+                      await Future.delayed(const Duration(seconds: 2), () {
+                        showBottom = false;
+                        if (mounted) {
+                          setState(() {});
+                        }
+                      });
                     });
                   } // <-- The target method
                       );
@@ -106,6 +115,7 @@ class _OverlayControlsState extends State<OverlayControls>
                                 onDoubleTap: () {
                                   //seeking backward function
                                   setState(() => showLeft = true);
+
                                   widget.control.seekTo(
                                       widget.control.value.position -
                                           const Duration(seconds: 3));
@@ -118,8 +128,12 @@ class _OverlayControlsState extends State<OverlayControls>
                                               1), // <-- The debounce duration
                                       () async {
                                     await Future.delayed(
-                                        const Duration(seconds: 1),
-                                        () => setState(() => showLeft = false));
+                                        const Duration(seconds: 1), () {
+                                      showLeft = false;
+                                      if (mounted) {
+                                        setState(() {});
+                                      }
+                                    });
                                   } // <-- The target method
                                       );
                                 },
@@ -170,11 +184,17 @@ class _OverlayControlsState extends State<OverlayControls>
                                           _allControl =
                                               Timer(const Duration(seconds: 2),
                                                   () async {
-                                            setState(() => showAll = false);
+                                            showAll = false;
+                                            if (mounted) {
+                                              setState(() {});
+                                            }
                                             await Future.delayed(
-                                                const Duration(seconds: 2),
-                                                () => setState(
-                                                    () => showBottom = false));
+                                                const Duration(seconds: 2), () {
+                                              showBottom = false;
+                                              if (mounted) {
+                                                setState(() {});
+                                              }
+                                            });
                                           });
                                         } // <-- The target method
                                             );
@@ -202,9 +222,12 @@ class _OverlayControlsState extends State<OverlayControls>
                                               1), // <-- The debounce duration
                                       () async {
                                     await Future.delayed(
-                                        const Duration(seconds: 1),
-                                        () =>
-                                            setState(() => showRight = false));
+                                        const Duration(seconds: 1), () {
+                                      showRight = false;
+                                      if (mounted) {
+                                        setState(() {});
+                                      }
+                                    });
                                   } // <-- The target method
                                       );
                                 },
@@ -280,31 +303,40 @@ class _OverlayControlsState extends State<OverlayControls>
                                         ),
                                       ],
                                     ),
-                                    Wrap(
-                                      children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                captionActive = !captionActive;
-                                              });
-                                            },
-                                            icon: SvgPicture.string(''''<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill="white" d="M464 64H48C21.5 64 0 85.5 0 112v288c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48M218.1 287.7c2.8-2.5 7.1-2.1 9.2.9l19.5 27.7c1.7 2.4 1.5 5.6-.5 7.7c-53.6 56.8-172.8 32.1-172.8-67.9c0-97.3 121.7-119.5 172.5-70.1c2.1 2 2.5 3.2 1 5.7l-17.5 30.5c-1.9 3.1-6.2 4-9.1 1.7c-40.8-32-94.6-14.9-94.6 31.2c.1 48 51.1 70.5 92.3 32.6m190.4 0c2.8-2.5 7.1-2.1 9.2.9l19.5 27.7c1.7 2.4 1.5 5.6-.5 7.7c-53.5 56.9-172.7 32.1-172.7-67.9c0-97.3 121.7-119.5 172.5-70.1c2.1 2 2.5 3.2 1 5.7L420 222.2c-1.9 3.1-6.2 4-9.1 1.7c-40.8-32-94.6-14.9-94.6 31.2c0 48 51 70.5 92.2 32.6"/></svg>'''
-,width: 22,colorFilter: ColorFilter.mode(!captionActive?Colors.white.withOpacity(0.7):Colors.white,BlendMode.srcIn),
-                                        )),IconButton(
-                                            onPressed: () {
-                                              setLandscape(false);
-                                              // Provider.of<StateManager>(context,
-                                              //         listen: false)
-                                              //     .setOrientation(context);
-                                            },
-                                            icon: const Icon(
-                                              Icons.fit_screen,
-                                              color: Colors.white,
-                                            ))
-                                      ],
-                                    )
+                                    // Wrap(
+                                    //   children: [
+                                    //     IconButton(
+                                    //         onPressed: () {
+                                    //           setState(() {
+                                    //             captionActive = !captionActive;
+                                    //           });
+                                    //         },
+                                    //         icon: SvgPicture.string(
+                                    //           ''''<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill="white" d="M464 64H48C21.5 64 0 85.5 0 112v288c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48M218.1 287.7c2.8-2.5 7.1-2.1 9.2.9l19.5 27.7c1.7 2.4 1.5 5.6-.5 7.7c-53.6 56.8-172.8 32.1-172.8-67.9c0-97.3 121.7-119.5 172.5-70.1c2.1 2 2.5 3.2 1 5.7l-17.5 30.5c-1.9 3.1-6.2 4-9.1 1.7c-40.8-32-94.6-14.9-94.6 31.2c.1 48 51.1 70.5 92.3 32.6m190.4 0c2.8-2.5 7.1-2.1 9.2.9l19.5 27.7c1.7 2.4 1.5 5.6-.5 7.7c-53.5 56.9-172.7 32.1-172.7-67.9c0-97.3 121.7-119.5 172.5-70.1c2.1 2 2.5 3.2 1 5.7L420 222.2c-1.9 3.1-6.2 4-9.1 1.7c-40.8-32-94.6-14.9-94.6 31.2c0 48 51 70.5 92.2 32.6"/></svg>''',
+                                    //           width: 22,
+                                    //           colorFilter: ColorFilter.mode(
+                                    //               !captionActive
+                                    //                   ? Colors.white
+                                    //                       .withOpacity(0.7)
+                                    //                   : Colors.white,
+                                    //               BlendMode.srcIn),
+                                    //         )),
+                                    //     IconButton(
+                                    //         onPressed: () {
+                                    //           widget.switchToLandScape?.call();
+                                    //           // Provider.of<StateManager>(context,
+                                    //           //         listen: false)
+                                    //           //     .setOrientation(context);
+                                    //         },
+                                    //         icon: const Icon(
+                                    //           Icons.fit_screen,
+                                    //           color: Colors.white,
+                                    //         ))
+                                    //   ],
+                                    // ),
+                                  
                                   ],
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -328,16 +360,14 @@ String constructTimer(int counter) {
   return "${hours <= 0 ? "" : hours.toString().padLeft(2, '0')}${hours <= 0 ? "" : ":"}${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}";
 }
 
-Future setLandscape(bool setLand) async {
-  if (setLand) {
-    await SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-  } else {
-    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-  }
-}
+// if (setLand) {
+//   await SystemChrome.setPreferredOrientations(
+//       [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+//   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+// } else {
+//   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+//   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+// }
 
 Future reset() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
