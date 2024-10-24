@@ -3,10 +3,11 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:instudy/models/quiz.dart';
 import 'package:instudy/pages/course_listing/widgets/quiz/quiz_answer.dart';
 import 'package:instudy/utils/app_colors.dart';
 
-Future<bool?> popQuiz(BuildContext context) async {
+Future<bool?> popQuiz(BuildContext context, {required Quiz popQuiz}) async {
   return await showAnimatedDialog(
       barrierDismissible: true,
       animationType: DialogTransitionType.slideFromBottom,
@@ -25,7 +26,9 @@ Future<bool?> popQuiz(BuildContext context) async {
                       borderRadius: BorderRadius.circular(16)),
                   insetPadding: const EdgeInsets.symmetric(horizontal: 24),
                   backgroundColor: Colors.white,
-                  child: const PopQuiz(),
+                  child: PopQuiz(
+                    popQuiz: popQuiz,
+                  ),
                 ),
               ),
             ),
@@ -33,7 +36,8 @@ Future<bool?> popQuiz(BuildContext context) async {
 }
 
 class PopQuiz extends StatefulWidget {
-  const PopQuiz({super.key});
+  final Quiz popQuiz;
+  const PopQuiz({super.key, required this.popQuiz});
 
   @override
   State<PopQuiz> createState() => _PopQuizState();
@@ -42,8 +46,8 @@ class PopQuiz extends StatefulWidget {
 class _PopQuizState extends State<PopQuiz> {
   String value = "";
 
-  clickAnswer(String selected) {
-    value = selected;
+  clickAnswer(Option option) {
+    value = option.optionLetter ;
     print(value);
     setState(() {});
     Future.delayed(const Duration(milliseconds: 1000), () {
@@ -98,44 +102,38 @@ class _PopQuizState extends State<PopQuiz> {
             const Divider(),
             const Gap(33),
             Text(
-              "Which of the following is the hardest material known to man?",
+              widget.popQuiz.question,
               style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
             ),
             const Gap(29),
             Wrap(
-              runSpacing: 24,
+              runSpacing: 10,
               children: [
                 Wrap(
-                  spacing: 24,
-                  children: [
-                    _quizOptions(context,
-                        optionIndex: "A",
-                        value: "Gold",
-                        onTap: clickAnswer,
-                        isSelected: value == "A"),
-                    _quizOptions(context,
-                        optionIndex: "B",
-                        value: "Diamond",
-                        onTap: clickAnswer,
-                        isSelected: value == "B"),
-                  ],
-                ),
+                    spacing: 24,
+                    children: List.generate(
+                      widget.popQuiz.options.length.clamp(0, 2),
+                      (index) {
+                        Option option = widget.popQuiz.options[index];
+                        return _quizOptions(context,
+                            option: option,
+                            onTap: clickAnswer,
+                            isSelected: value == option.optionLetter.toUpperCase());
+                      },
+                    )),
                 Wrap(
-                  spacing: 24,
-                  children: [
-                    _quizOptions(context,
-                        optionIndex: "C",
-                        value: "Iron",
-                        onTap: clickAnswer,
-                        isSelected: value == "C"),
-                    _quizOptions(context,
-                        optionIndex: "D",
-                        value: "Rubber",
-                        onTap: clickAnswer,
-                        isSelected: value == "D"),
-                  ],
-                ),
+                    spacing: 24,
+                    children: List.generate(
+                      widget.popQuiz.options.sublist(2).length,
+                      (index) {
+                        Option option = widget.popQuiz.options.sublist(2)[index];
+                        return _quizOptions(context,
+                            option: option,
+                            onTap: clickAnswer,
+                            isSelected: value == option.optionLetter.toUpperCase());
+                      },
+                    )),
               ],
             )
           ],
@@ -146,12 +144,11 @@ class _PopQuizState extends State<PopQuiz> {
 }
 
 Widget _quizOptions(BuildContext context,
-        {required String optionIndex,
-        required String value,
+        {required Option option,
         bool isSelected = false,
-        Function(String value)? onTap}) =>
+        Function(Option option)? onTap}) =>
     InkWell(
-      onTap: () => onTap?.call(optionIndex),
+      onTap: () => onTap?.call(option),
       child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           constraints: BoxConstraints(
@@ -165,13 +162,13 @@ Widget _quizOptions(BuildContext context,
           child: Text.rich(TextSpan(
               children: [
                 TextSpan(
-                    text: "$optionIndex. ",
+                    text: "${option.optionLetter}. ",
                     style: Theme.of(context).textTheme.displaySmall?.copyWith(
                         fontSize: 12,
                         color: isSelected
                             ? Colors.white
                             : AppColors.textColorDark2)),
-                TextSpan(text: value)
+                TextSpan(text: option.optionText)
               ],
               style: Theme.of(context).textTheme.displaySmall?.copyWith(
                   fontSize: 12, color: isSelected ? Colors.white : null)))),

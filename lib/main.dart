@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instudy/pages/splash_screen.dart';
+import 'package:instudy/provider/bookmark_tag_provider.dart';
 import 'package:instudy/provider/course_provider.dart';
 import 'package:instudy/provider/course_video_listing_provider.dart';
 import 'package:instudy/provider/dashboard_provider.dart';
@@ -37,6 +38,11 @@ void main() {
         create: (context) => DashboardProvider(),
         
       ),
+      ChangeNotifierProvider(
+        create: (context) => BookmarkTagProvider(),
+        
+      ),
+      
       
       
   ],child: const MainApp(),));

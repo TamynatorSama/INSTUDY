@@ -272,6 +272,7 @@ class _AuthPageState extends State<AuthPage>
                                   .displayMedium
                                   ?.copyWith(fontSize: 13),
                             ),
+                            
                             const Gap(15),
                             MediaQuery(
                               data: MediaQuery.of(context).copyWith(

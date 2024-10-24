@@ -15,8 +15,11 @@ class CourseContentListing extends StatefulWidget {
 class _CourseContentListingState extends State<CourseContentListing> {
   @override
   void initState() {
-    SchedulerBinding.instance.addPostFrameCallback(
-        (_) => context.read<DashboardProvider>().fetchCourseListing());
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (context.read<DashboardProvider>().videos.isEmpty) {
+        context.read<DashboardProvider>().fetchCourseListing();
+      }
+    });
     super.initState();
   }
 
@@ -24,18 +27,21 @@ class _CourseContentListingState extends State<CourseContentListing> {
   Widget build(BuildContext context) {
     return Consumer<DashboardProvider>(
       builder: (_, ref, __) {
-        return Skeletonizer(
-          enabled: ref.isLoading,
-          child: ListView.builder(
-              itemCount: ref.isLoading ? 1 : ref.videos.length,
-              padding: const EdgeInsets.only(top: 24),
-              itemBuilder: (context, index) => ref.isLoading
-                  ? CourseContentHolder(
-                      value: index,
-                    )
-                  : CourseContentHolder(
-                      video: ref.videos.elementAt(index),
-                    )),
+        return RefreshIndicator(
+          onRefresh: ()=>context.read<DashboardProvider>().fetchCourseListing(),
+          child: Skeletonizer(
+            enabled: ref.isLoading,
+            child: ListView.builder(
+                itemCount: ref.isLoading ? 1 : ref.videos.length,
+                padding: const EdgeInsets.only(top: 24),
+                itemBuilder: (context, index) => ref.isLoading
+                    ? CourseContentHolder(
+                        value: index,
+                      )
+                    : CourseContentHolder(
+                        video: ref.videos.elementAt(index),
+                      )),
+          ),
         );
       },
     );

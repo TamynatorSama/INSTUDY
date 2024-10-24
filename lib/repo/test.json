@@ -1,0 +1,814 @@
+{
+    "status": "SUCCESS",
+    "code": 200,
+    "message": "successful!",
+    "data": {
+        "info": [
+            {
+                "_id": "67187a43f1cdf2a94aa99aa5",
+                "user_id": "670c1af3dc4b768c1643e457",
+                "feed_id": {
+                    "_id": "6717f1d53839c3d4cbd9f8b9",
+                    "course_id": "670ae3b3a498ae04b4268d41",
+                    "video_id": {
+                        "_id": "6714a68d9c4df96f3e7c584a",
+                        "course_id": "670ae3b3a498ae04b4268d41",
+                        "file": {
+                            "bucket": "morgan-hackathon",
+                            "key": "AWS re_Invent 2022 - Kubernetes virtually anywhere, for everyone (CON208-L).mp4"
+                        },
+                        "s3_uri": "s3://morgan-hackathon/AWS re_Invent 2022 - Kubernetes virtually anywhere, for everyone (CON208-L).mp4",
+                        "s3_link": "https://morgan-hackathon.s3.amazonaws.com/AWS re_Invent 2022 - Kubernetes virtually anywhere, for everyone (CON208-L).mp4",
+                        "duration": 3588.217967,
+                        "medium": "others",
+                        "week": 1,
+                        "transcript_ready": 1,
+                        "segments_ready": 0,
+                        "job_status": 1,
+                        "status": 2,
+                        "createdAt": "2024-10-20T06:43:25.731Z",
+                        "updatedAt": "2024-10-23T03:03:00.410Z",
+                        "__v": 0
+                    },
+                    "transcript": "Please welcome Vice President Kubernetes, Aws Barry Cooks. Hi. Thank you all for joining me. You can stretch a little bit. I know it's the end of a long day for a lot of you. Uh Welcome. Thank you for joining us at our very first Guberti leadership session and welcome to Re Invent 2022. Uh Quick personal shout out just to all of the Aws Kubernetes teams. Thank you for your hard work. I have the easy job. I just get to represent all the stuff they get to do. Um So shout out to them and thanks. My guess is if you're here, you're in one of a couple of different camps. Camp number one is you already know Kubernetes. Maybe you're a current customer of ours, maybe you're a partner. You, you just kind of want to know, what are you up to? Are you solving the problems that I have? What's my laundry list look like? Where are you going next? Or you just can't seem to get away from Kubernetes because it seems to be popping up everywhere you go to linkedin, you go to different places and everybody seems to have something to say about Kubernetes on their profiles. In either of those cases, my goal today is to spend the next hour really helping you walk away with an understanding of why we think Kubernetes is awesome and why we think that Aws is the best and most trusted place to run your Kubernetes workloads. So when you look at this image, I think we can all recognize pretty quickly. It has absolutely nothing to do with Kubernetes. But what I wanted to do is start off with a bit of an analogy. Let's ease our way into the technical stuff since K Benetti is supposedly hard. I was thinking Mirage in the desert journey to the cloud, easy to start, hard to finish, challenging to get yourself to where you want to be, right? That's sort of the general theme. My only problem is I'm a little old school, did some searches for the Mirage in the desert and I turned up the Mirage, which is technically in the desert. Um At this point, I was feeling slightly frustrated. One of the folks on the team came up and said, what's with all the chewy image search stuff you're doing? Like there are A I image generators these days. You should just be using one of those. And so that was how I did get to the actual mirage in the desert. Only problem is I believe that's a Mitsubishi Mirage, but it is technically in the desert. So I was making some progress. But what's the takeaway? Right. The key here is filling in these gaps from where you are today to a modern architecture that can be really challenging. It can be a steep climb uh for a lot of teams, right? So the longer you've been working on prem, the longer you've been kind of in a monolithic style architecture, the harder this path feels like. So hopefully today we'll be able to bust through some of that, help people understand what that path can look like. Let's take a quick look at the journey. Where are we going to go? What are we planning to do today? I think we'll set the stage a little bit around at mod at modernization a little bit on the technologies that are in use there. Kind of what that path looks like. We'll talk about our customers at Aws. Why are they choosing Kubernetes? Who are these customers? What are the kinds of things they build on Aws? And it'll be a pretty broad cross section there. Um We'll talk about what we've been up to with respect to Kubernetes, like I said, for those folks who are familiar with Kubernetes and maybe they're currently using it either at Aws or somewhere else. We want to make sure we touch on those topics, talk about what we're working on what our vision for the future kind of looks like. Uh And I wanna end it on a little bit on how to get yourself moving. So if you need a little help in that journey, what are the things that we have to help you kind of get down that path? So let's start with the problem, right? The problem is really well represented here. People are really just struggling to get the best leverage from technology that they can. And, and I thought this was a, a super interesting stat, the 8020 rule, but not in the way you'd like it. And you know, if you think about it, Gartner estimates somewhere in the neighborhood of 95% of net new workloads will be built using cloud native technologies. That is awesome. Uh As long as you're doing net new workloads and if you've got this large collection of stuff that's still hanging around and has been for a long time, then what are you supposed to do? How do you kind of get yourself into a more modern architecture using more modern technologies? Feeling like you've kind of gotten to some of those gains that the cloud is always promising. This will seem pretty straightforward. Lots of commonality in what customers are asking for when they talk to us about the things they want us all for should be no surprise. People want to get to market faster, right? They want lower total cost of ownership, they just want to pay for what they use and only use what they need, right? It's one of the huge benefits of the cloud, of course, they want to scale as needed for the unexpected up and down, right, to reduce those costs, you want to be able to scale down. Um And if you really think about it, you want to take full advantage of the different aspects of the cloud performance and scale being one of those. And if you take a half a step back, remember, I'll say in the old days uh for classical on Prem, do you want to manage air conditioners? Power suppliers, backup generators, there's all these things that people are used to not managing once they move to the cloud that are undifferentiated, heavy lifts for people who are trying to get themselves out of that 80% and into more of the 20% right? Driving that inter inter innovation engine is a big thing. The other piece related this security and isolation by design, the current threat landscape is very dynamic. It involves a lot of players with a lot of money who are pushing things forward. It would be really nice to have a partner in that and that's something that aws is focused on since its very beginning is security and isolation by design. And so it's nice for us to have your back on those sorts of things. So what is innovation really about classic flywheel? What do you want? Do you want to take an idea and get it in an experiment in front of customers as fast as you can, whether those are internal customers or external customers, it doesn't matter. The idea is the same. I want to be able to go and test something, get real feedback and then iterate and the faster you can iterate, the faster you're gonna get to the right kind of solution for the problem that you have. Right? Nobody is perfect on rev one, right? So the idea is make small changes, do those incremental changes work with your customers and get their feedback, they will see the value in you trying to meet their needs and you will feel like you're actually moving that ball forward much, much faster and more effectively. So let's review a couple of the technologies in play for app modernization and modern cloud architecture is one of them is clearly containers, right? So what makes containers special? Why is it that both developers and it orgs look at these and find them really valuable. So one is portability, right? The classic it worked on my laptop problem. One of the great things about containers is self contained pun intended and you see in there, I've got everything I need to go run this piece of code. And when I put it somewhere else, it has everything it needs to run just like it did where I had it before. It's an amazing piece of of functionality that comes with containers from an infrastructure efficiency perspective, they're really light, right? It's easy to start up and stop containers. It's easy to pack them in, right? So you get a tighter bin packing and more efficient use of the resources that you have. So there's a bunch of strength in containers in those regards. Another thing from an operations perspective, it's back to what is undifferentiated, heavy lifting and where do you want to spend your time? Do you want to manage OS images? Because there's a lot of work involved in that containers allow you to kind of take another half step back from that, focus on managing your application, your content in your container and not the rest of the components in that stack. And so it drives the savings from an operational perspective as well. If we look at Kubernetes, what made Kubernetes successful? I'll just declare now, I think it's been very successful. So when you start moving into containers, you start building microservice based architectures, you start getting a lot of containers. And so when you get enough of them, you get sprawl, right? Some somehow you need to orchestrate all of these containers and you need to drive consistent deployment mechanisms for those containers. That's where Kubernetes came to the forefront. One of the key facets Kubernetes, right? I can go and have a declarative model that gets reconciled. I can tell the system, this is how I want this set of containers to behave. This is the scaling I want for them and the system monitors and keeps track of and continues to reconcile changes in that behavior for you over time. It's a very powerful piece of the model consistency. Another major component when you look at Kubernetes is the API consistency regardless of where you're running Kubernetes. One of the strengths of kubernetes open source at API. If I'm running Kubernetes on Prem, maybe you're running kubernetes yourself in EC2, maybe you're using one of the products like Eks or Eks.",
+                    "start_time": 0.36,
+                    "end_time": 509.088,
+                    "timed_transcript": [
+                        {
+                            "start_time": 0.36,
+                            "end_time": 5.76,
+                            "transcript": "Please welcome Vice President Kubernetes, Aws Barry Cooks.",
+                            "_id": "6717f1d53839c3d4cbd9f8ba"
+                        },
+                        {
+                            "start_time": 13.84,
+                            "end_time": 15.815714285714286,
+                            "transcript": "Hi.",
+                            "_id": "6717f1d53839c3d4cbd9f8bb"
+                        },
+                        {
+                            "start_time": 15.815714285714286,
+                            "end_time": 17.791428571428572,
+                            "transcript": "Thank you all for joining me.",
+                            "_id": "6717f1d53839c3d4cbd9f8bc"
+                        },
+                        {
+                            "start_time": 17.791428571428572,
+                            "end_time": 19.767142857142858,
+                            "transcript": "You can stretch a little bit.",
+                            "_id": "6717f1d53839c3d4cbd9f8bd"
+                        },
+                        {
+                            "start_time": 19.767142857142858,
+                            "end_time": 21.742857142857144,
+                            "transcript": "I know it's the end of a long day for a lot of you.",
+                            "_id": "6717f1d53839c3d4cbd9f8be"
+                        },
+                        {
+                            "start_time": 21.742857142857144,
+                            "end_time": 23.71857142857143,
+                            "transcript": "Uh Welcome.",
+                            "_id": "6717f1d53839c3d4cbd9f8bf"
+                        },
+                        {
+                            "start_time": 23.71857142857143,
+                            "end_time": 25.694285714285716,
+                            "transcript": "Thank you for joining us at our very first Guberti leadership session and welcome to Re Invent 2022.",
+                            "_id": "6717f1d53839c3d4cbd9f8c0"
+                        },
+                        {
+                            "start_time": 25.694285714285716,
+                            "end_time": 27.67,
+                            "transcript": "Uh",
+                            "_id": "6717f1d53839c3d4cbd9f8c1"
+                        },
+                        {
+                            "start_time": 28.53,
+                            "end_time": 30.92,
+                            "transcript": "Quick personal shout out just to all of the Aws Kubernetes teams.",
+                            "_id": "6717f1d53839c3d4cbd9f8c2"
+                        },
+                        {
+                            "start_time": 30.92,
+                            "end_time": 33.31,
+                            "transcript": "Thank you for your hard work.",
+                            "_id": "6717f1d53839c3d4cbd9f8c3"
+                        },
+                        {
+                            "start_time": 33.31,
+                            "end_time": 35.7,
+                            "transcript": "I have the easy job.",
+                            "_id": "6717f1d53839c3d4cbd9f8c4"
+                        },
+                        {
+                            "start_time": 35.7,
+                            "end_time": 38.09,
+                            "transcript": "I just get to represent all the stuff they get to do.",
+                            "_id": "6717f1d53839c3d4cbd9f8c5"
+                        },
+                        {
+                            "start_time": 38.09,
+                            "end_time": 40.480000000000004,
+                            "transcript": "Um So shout out to them and thanks.",
+                            "_id": "6717f1d53839c3d4cbd9f8c6"
+                        },
+                        {
+                            "start_time": 40.480000000000004,
+                            "end_time": 42.87,
+                            "transcript": "My guess is if you're here, you're in one of a couple of different camps.",
+                            "_id": "6717f1d53839c3d4cbd9f8c7"
+                        },
+                        {
+                            "start_time": 42.87,
+                            "end_time": 45.26,
+                            "transcript": "Camp number one is you already know Kubernetes.",
+                            "_id": "6717f1d53839c3d4cbd9f8c8"
+                        },
+                        {
+                            "start_time": 45.26,
+                            "end_time": 47.65,
+                            "transcript": "Maybe you're a current customer of ours, maybe you're a partner.",
+                            "_id": "6717f1d53839c3d4cbd9f8c9"
+                        },
+                        {
+                            "start_time": 47.959,
+                            "end_time": 52.847500000000004,
+                            "transcript": "You, you just kind of want to know, what are you up to?",
+                            "_id": "6717f1d53839c3d4cbd9f8ca"
+                        },
+                        {
+                            "start_time": 52.847500000000004,
+                            "end_time": 57.736000000000004,
+                            "transcript": "Are you solving the problems that I have?",
+                            "_id": "6717f1d53839c3d4cbd9f8cb"
+                        },
+                        {
+                            "start_time": 57.736000000000004,
+                            "end_time": 62.624500000000005,
+                            "transcript": "What's my laundry list look like?",
+                            "_id": "6717f1d53839c3d4cbd9f8cc"
+                        },
+                        {
+                            "start_time": 62.624500000000005,
+                            "end_time": 67.513,
+                            "transcript": "Where are you going next?",
+                            "_id": "6717f1d53839c3d4cbd9f8cd"
+                        },
+                        {
+                            "start_time": 67.513,
+                            "end_time": 72.4015,
+                            "transcript": "Or you just can't seem to get away from Kubernetes because it seems to be popping up everywhere you go to linkedin, you go to different places and everybody seems to have something to say about Kubernetes on their profiles.",
+                            "_id": "6717f1d53839c3d4cbd9f8ce"
+                        },
+                        {
+                            "start_time": 72.4015,
+                            "end_time": 77.29,
+                            "transcript": "In either of those cases, my goal today is to spend the next hour really helping you walk away with an understanding of why we think Kubernetes is awesome and why we think that Aws is the best and most trusted place to run your Kubernetes workloads.",
+                            "_id": "6717f1d53839c3d4cbd9f8cf"
+                        },
+                        {
+                            "start_time": 78.66,
+                            "end_time": 81.93975,
+                            "transcript": "So when you look at this image, I think we can all recognize pretty quickly.",
+                            "_id": "6717f1d53839c3d4cbd9f8d0"
+                        },
+                        {
+                            "start_time": 81.93975,
+                            "end_time": 85.2195,
+                            "transcript": "It has absolutely nothing to do with Kubernetes.",
+                            "_id": "6717f1d53839c3d4cbd9f8d1"
+                        },
+                        {
+                            "start_time": 85.2195,
+                            "end_time": 88.49924999999999,
+                            "transcript": "But what I wanted to do is start off with a bit of an analogy.",
+                            "_id": "6717f1d53839c3d4cbd9f8d2"
+                        },
+                        {
+                            "start_time": 88.49924999999999,
+                            "end_time": 91.779,
+                            "transcript": "Let's ease our way into the technical stuff since K Benetti is supposedly hard.",
+                            "_id": "6717f1d53839c3d4cbd9f8d3"
+                        },
+                        {
+                            "start_time": 92.61,
+                            "end_time": 98.49966666666667,
+                            "transcript": "I was thinking Mirage in the desert journey to the cloud, easy to start, hard to finish, challenging to get yourself to where you want to be, right?",
+                            "_id": "6717f1d53839c3d4cbd9f8d4"
+                        },
+                        {
+                            "start_time": 98.49966666666667,
+                            "end_time": 104.38933333333333,
+                            "transcript": "That's sort of the general theme.",
+                            "_id": "6717f1d53839c3d4cbd9f8d5"
+                        },
+                        {
+                            "start_time": 104.38933333333333,
+                            "end_time": 110.279,
+                            "transcript": "My only problem is I'm a little old school, did some searches for the Mirage in the desert and I turned up the Mirage, which is technically in the desert.",
+                            "_id": "6717f1d53839c3d4cbd9f8d6"
+                        },
+                        {
+                            "start_time": 110.76,
+                            "end_time": 113.846,
+                            "transcript": "Um At this point, I was feeling slightly frustrated.",
+                            "_id": "6717f1d53839c3d4cbd9f8d7"
+                        },
+                        {
+                            "start_time": 113.846,
+                            "end_time": 116.932,
+                            "transcript": "One of the folks on the team came up and said, what's with all the chewy image search stuff you're doing?",
+                            "_id": "6717f1d53839c3d4cbd9f8d8"
+                        },
+                        {
+                            "start_time": 116.932,
+                            "end_time": 120.018,
+                            "transcript": "Like there are A I image generators these days.",
+                            "_id": "6717f1d53839c3d4cbd9f8d9"
+                        },
+                        {
+                            "start_time": 120.018,
+                            "end_time": 123.104,
+                            "transcript": "You should just be using one of those.",
+                            "_id": "6717f1d53839c3d4cbd9f8da"
+                        },
+                        {
+                            "start_time": 123.104,
+                            "end_time": 126.19,
+                            "transcript": "And so that was how I did get to the actual mirage in the desert.",
+                            "_id": "6717f1d53839c3d4cbd9f8db"
+                        },
+                        {
+                            "start_time": 126.86,
+                            "end_time": 129.30285714285714,
+                            "transcript": "Only problem is I believe that's a Mitsubishi Mirage, but it is technically in the desert.",
+                            "_id": "6717f1d53839c3d4cbd9f8dc"
+                        },
+                        {
+                            "start_time": 129.30285714285714,
+                            "end_time": 131.74571428571429,
+                            "transcript": "So I was making some progress.",
+                            "_id": "6717f1d53839c3d4cbd9f8dd"
+                        },
+                        {
+                            "start_time": 131.74571428571429,
+                            "end_time": 134.18857142857144,
+                            "transcript": "But what's the takeaway?",
+                            "_id": "6717f1d53839c3d4cbd9f8de"
+                        },
+                        {
+                            "start_time": 134.18857142857144,
+                            "end_time": 136.6314285714286,
+                            "transcript": "Right.",
+                            "_id": "6717f1d53839c3d4cbd9f8df"
+                        },
+                        {
+                            "start_time": 136.6314285714286,
+                            "end_time": 139.0742857142857,
+                            "transcript": "The key here is filling in these gaps from where you are today to a modern architecture that can be really challenging.",
+                            "_id": "6717f1d53839c3d4cbd9f8e0"
+                        },
+                        {
+                            "start_time": 139.0742857142857,
+                            "end_time": 141.51714285714286,
+                            "transcript": "It can be a steep climb uh for a lot of teams, right?",
+                            "_id": "6717f1d53839c3d4cbd9f8e1"
+                        },
+                        {
+                            "start_time": 141.51714285714286,
+                            "end_time": 143.96,
+                            "transcript": "So",
+                            "_id": "6717f1d53839c3d4cbd9f8e2"
+                        },
+                        {
+                            "start_time": 144.74,
+                            "end_time": 148.19128571428573,
+                            "transcript": "the longer you've been working on prem, the longer you've been kind of in a monolithic style architecture, the harder this path feels like.",
+                            "_id": "6717f1d53839c3d4cbd9f8e3"
+                        },
+                        {
+                            "start_time": 148.19128571428573,
+                            "end_time": 151.64257142857144,
+                            "transcript": "So hopefully today we'll be able to bust through some of that, help people understand what that path can look like.",
+                            "_id": "6717f1d53839c3d4cbd9f8e4"
+                        },
+                        {
+                            "start_time": 151.64257142857144,
+                            "end_time": 155.09385714285716,
+                            "transcript": "Let's take a quick look at the journey.",
+                            "_id": "6717f1d53839c3d4cbd9f8e5"
+                        },
+                        {
+                            "start_time": 155.09385714285716,
+                            "end_time": 158.54514285714285,
+                            "transcript": "Where are we going to go?",
+                            "_id": "6717f1d53839c3d4cbd9f8e6"
+                        },
+                        {
+                            "start_time": 158.54514285714285,
+                            "end_time": 161.99642857142857,
+                            "transcript": "What are we planning to do today?",
+                            "_id": "6717f1d53839c3d4cbd9f8e7"
+                        },
+                        {
+                            "start_time": 161.99642857142857,
+                            "end_time": 165.44771428571428,
+                            "transcript": "I think we'll set the stage a little bit around at mod at modernization a little bit on the technologies that are in use there.",
+                            "_id": "6717f1d53839c3d4cbd9f8e8"
+                        },
+                        {
+                            "start_time": 165.44771428571428,
+                            "end_time": 168.899,
+                            "transcript": "Kind of what that path looks like.",
+                            "_id": "6717f1d53839c3d4cbd9f8e9"
+                        },
+                        {
+                            "start_time": 169.089,
+                            "end_time": 172.42057142857144,
+                            "transcript": "We'll talk about our customers at Aws.",
+                            "_id": "6717f1d53839c3d4cbd9f8ea"
+                        },
+                        {
+                            "start_time": 172.42057142857144,
+                            "end_time": 175.75214285714284,
+                            "transcript": "Why are they choosing Kubernetes?",
+                            "_id": "6717f1d53839c3d4cbd9f8eb"
+                        },
+                        {
+                            "start_time": 175.75214285714284,
+                            "end_time": 179.08371428571428,
+                            "transcript": "Who are these customers?",
+                            "_id": "6717f1d53839c3d4cbd9f8ec"
+                        },
+                        {
+                            "start_time": 179.08371428571428,
+                            "end_time": 182.41528571428572,
+                            "transcript": "What are the kinds of things they build on Aws?",
+                            "_id": "6717f1d53839c3d4cbd9f8ed"
+                        },
+                        {
+                            "start_time": 182.41528571428572,
+                            "end_time": 185.74685714285715,
+                            "transcript": "And it'll be a pretty broad cross section there.",
+                            "_id": "6717f1d53839c3d4cbd9f8ee"
+                        },
+                        {
+                            "start_time": 185.74685714285715,
+                            "end_time": 189.07842857142856,
+                            "transcript": "Um We'll talk about what we've been up to with respect to Kubernetes, like I said, for those folks who are familiar with Kubernetes and maybe they're currently using it either at Aws or somewhere else.",
+                            "_id": "6717f1d53839c3d4cbd9f8ef"
+                        },
+                        {
+                            "start_time": 189.07842857142856,
+                            "end_time": 192.41,
+                            "transcript": "We want to make sure we touch on those topics, talk about what we're working on what our vision for the future kind of looks like.",
+                            "_id": "6717f1d53839c3d4cbd9f8f0"
+                        },
+                        {
+                            "start_time": 192.589,
+                            "end_time": 196.4595,
+                            "transcript": "Uh And I wanna end it on a little bit on how to get yourself moving.",
+                            "_id": "6717f1d53839c3d4cbd9f8f1"
+                        },
+                        {
+                            "start_time": 196.4595,
+                            "end_time": 200.33,
+                            "transcript": "So if you need a little help in that journey, what are the things that we have to help you kind of get down that path?",
+                            "_id": "6717f1d53839c3d4cbd9f8f2"
+                        },
+                        {
+                            "start_time": 201.929,
+                            "end_time": 204.1845,
+                            "transcript": "So let's start with the problem, right?",
+                            "_id": "6717f1d53839c3d4cbd9f8f3"
+                        },
+                        {
+                            "start_time": 204.1845,
+                            "end_time": 206.44,
+                            "transcript": "The problem is really well represented here.",
+                            "_id": "6717f1d53839c3d4cbd9f8f4"
+                        },
+                        {
+                            "start_time": 207.029,
+                            "end_time": 212.379,
+                            "transcript": "People are really just struggling to get the best leverage from technology that they can.",
+                            "_id": "6717f1d53839c3d4cbd9f8f5"
+                        },
+                        {
+                            "start_time": 212.379,
+                            "end_time": 217.72899999999998,
+                            "transcript": "And, and I thought this was a, a super interesting stat, the 8020 rule, but not in the way you'd like it.",
+                            "_id": "6717f1d53839c3d4cbd9f8f6"
+                        },
+                        {
+                            "start_time": 217.72899999999998,
+                            "end_time": 223.079,
+                            "transcript": "And you know, if you think about it, Gartner estimates somewhere in the neighborhood of 95% of net new workloads will be built using cloud native technologies.",
+                            "_id": "6717f1d53839c3d4cbd9f8f7"
+                        },
+                        {
+                            "start_time": 223.079,
+                            "end_time": 228.429,
+                            "transcript": "That is awesome.",
+                            "_id": "6717f1d53839c3d4cbd9f8f8"
+                        },
+                        {
+                            "start_time": 228.429,
+                            "end_time": 233.779,
+                            "transcript": "Uh As long as you're doing net new workloads and if you've got this large collection of stuff that's still hanging around and has been for a long time,",
+                            "_id": "6717f1d53839c3d4cbd9f8f9"
+                        },
+                        {
+                            "start_time": 234.089,
+                            "end_time": 237.64933333333335,
+                            "transcript": "then what are you supposed to do?",
+                            "_id": "6717f1d53839c3d4cbd9f8fa"
+                        },
+                        {
+                            "start_time": 237.64933333333335,
+                            "end_time": 241.20966666666666,
+                            "transcript": "How do you kind of get yourself into a more modern architecture using more modern technologies?",
+                            "_id": "6717f1d53839c3d4cbd9f8fb"
+                        },
+                        {
+                            "start_time": 241.20966666666666,
+                            "end_time": 244.77,
+                            "transcript": "Feeling like you've kind of gotten to some of those gains that the cloud is always promising.",
+                            "_id": "6717f1d53839c3d4cbd9f8fc"
+                        },
+                        {
+                            "start_time": 246.289,
+                            "end_time": 250.81583333333333,
+                            "transcript": "This will seem pretty straightforward.",
+                            "_id": "6717f1d53839c3d4cbd9f8fd"
+                        },
+                        {
+                            "start_time": 250.81583333333333,
+                            "end_time": 255.34266666666664,
+                            "transcript": "Lots of commonality in what customers are asking for when they talk to us about the things they want us all for should be no surprise.",
+                            "_id": "6717f1d53839c3d4cbd9f8fe"
+                        },
+                        {
+                            "start_time": 255.34266666666664,
+                            "end_time": 259.8695,
+                            "transcript": "People want to get to market faster, right?",
+                            "_id": "6717f1d53839c3d4cbd9f8ff"
+                        },
+                        {
+                            "start_time": 259.8695,
+                            "end_time": 264.3963333333333,
+                            "transcript": "They want lower total cost of ownership, they just want to pay for what they use and only use what they need, right?",
+                            "_id": "6717f1d53839c3d4cbd9f900"
+                        },
+                        {
+                            "start_time": 264.3963333333333,
+                            "end_time": 268.92316666666665,
+                            "transcript": "It's one of the huge benefits of the cloud, of course, they want to scale as needed for the unexpected up and down, right, to reduce those costs, you want to be able to scale down.",
+                            "_id": "6717f1d53839c3d4cbd9f901"
+                        },
+                        {
+                            "start_time": 268.92316666666665,
+                            "end_time": 273.45,
+                            "transcript": "Um And if you really think about it,",
+                            "_id": "6717f1d53839c3d4cbd9f902"
+                        },
+                        {
+                            "start_time": 273.679,
+                            "end_time": 280.99899999999997,
+                            "transcript": "you want to take full advantage of the different aspects of the cloud performance and scale being one of those.",
+                            "_id": "6717f1d53839c3d4cbd9f903"
+                        },
+                        {
+                            "start_time": 280.99899999999997,
+                            "end_time": 288.31899999999996,
+                            "transcript": "And if you take a half a step back, remember, I'll say in the old days uh for classical on Prem, do you want to manage air conditioners?",
+                            "_id": "6717f1d53839c3d4cbd9f904"
+                        },
+                        {
+                            "start_time": 288.31899999999996,
+                            "end_time": 295.639,
+                            "transcript": "Power suppliers, backup generators, there's all these things that people are used to not managing once they move to the cloud that are undifferentiated, heavy lifts for people who are trying to get themselves out of that 80% and into more of the 20% right?",
+                            "_id": "6717f1d53839c3d4cbd9f905"
+                        },
+                        {
+                            "start_time": 295.639,
+                            "end_time": 302.959,
+                            "transcript": "Driving that inter inter",
+                            "_id": "6717f1d53839c3d4cbd9f906"
+                        },
+                        {
+                            "start_time": 303.309,
+                            "end_time": 305.70450000000005,
+                            "transcript": "innovation engine is a big thing.",
+                            "_id": "6717f1d53839c3d4cbd9f907"
+                        },
+                        {
+                            "start_time": 305.70450000000005,
+                            "end_time": 308.1,
+                            "transcript": "The other piece related this security and isolation by design,",
+                            "_id": "6717f1d53839c3d4cbd9f908"
+                        },
+                        {
+                            "start_time": 308.769,
+                            "end_time": 313.159,
+                            "transcript": "the current threat landscape is very dynamic.",
+                            "_id": "6717f1d53839c3d4cbd9f909"
+                        },
+                        {
+                            "start_time": 313.159,
+                            "end_time": 317.549,
+                            "transcript": "It involves a lot of players with a lot of money who are pushing things forward.",
+                            "_id": "6717f1d53839c3d4cbd9f90a"
+                        },
+                        {
+                            "start_time": 317.549,
+                            "end_time": 321.939,
+                            "transcript": "It would be really nice to have a partner in that and that's something that aws is focused on since its very beginning is security and isolation by design.",
+                            "_id": "6717f1d53839c3d4cbd9f90b"
+                        },
+                        {
+                            "start_time": 321.939,
+                            "end_time": 326.329,
+                            "transcript": "And so it's nice for us to have your back on those sorts of things.",
+                            "_id": "6717f1d53839c3d4cbd9f90c"
+                        },
+                        {
+                            "start_time": 328.23,
+                            "end_time": 331.85,
+                            "transcript": "So what is innovation really about classic flywheel?",
+                            "_id": "6717f1d53839c3d4cbd9f90d"
+                        },
+                        {
+                            "start_time": 331.85,
+                            "end_time": 335.47,
+                            "transcript": "What do you want?",
+                            "_id": "6717f1d53839c3d4cbd9f90e"
+                        },
+                        {
+                            "start_time": 335.47,
+                            "end_time": 339.09000000000003,
+                            "transcript": "Do you want to take an idea and get it in an experiment in front of customers as fast as you can, whether those are internal customers or external customers, it doesn't matter.",
+                            "_id": "6717f1d53839c3d4cbd9f90f"
+                        },
+                        {
+                            "start_time": 339.09000000000003,
+                            "end_time": 342.71,
+                            "transcript": "The idea is the same.",
+                            "_id": "6717f1d53839c3d4cbd9f910"
+                        },
+                        {
+                            "start_time": 342.71,
+                            "end_time": 346.33,
+                            "transcript": "I want to be able to go and test something, get real feedback and then iterate and the faster you can iterate, the faster you're gonna get to the right kind of solution for the problem that you have.",
+                            "_id": "6717f1d53839c3d4cbd9f911"
+                        },
+                        {
+                            "start_time": 346.33,
+                            "end_time": 349.95,
+                            "transcript": "Right?",
+                            "_id": "6717f1d53839c3d4cbd9f912"
+                        },
+                        {
+                            "start_time": 349.95,
+                            "end_time": 353.57,
+                            "transcript": "Nobody is perfect on rev one,",
+                            "_id": "6717f1d53839c3d4cbd9f913"
+                        },
+                        {
+                            "start_time": 353.94,
+                            "end_time": 360.33500000000004,
+                            "transcript": "right?",
+                            "_id": "6717f1d53839c3d4cbd9f914"
+                        },
+                        {
+                            "start_time": 360.33500000000004,
+                            "end_time": 366.73,
+                            "transcript": "So the idea is make small changes, do those incremental changes work with your customers and get their feedback, they will see the value in you trying to meet their needs and you will feel like you're actually moving that ball forward much, much faster and more effectively.",
+                            "_id": "6717f1d53839c3d4cbd9f915"
+                        },
+                        {
+                            "start_time": 369.07,
+                            "end_time": 375.609,
+                            "transcript": "So let's review a couple of the technologies in play for app modernization and modern cloud architecture is one of them",
+                            "_id": "6717f1d53839c3d4cbd9f916"
+                        },
+                        {
+                            "start_time": 376.22,
+                            "end_time": 379.72125000000005,
+                            "transcript": "is clearly containers, right?",
+                            "_id": "6717f1d53839c3d4cbd9f917"
+                        },
+                        {
+                            "start_time": 379.72125000000005,
+                            "end_time": 383.2225,
+                            "transcript": "So what makes containers special?",
+                            "_id": "6717f1d53839c3d4cbd9f918"
+                        },
+                        {
+                            "start_time": 383.2225,
+                            "end_time": 386.72375,
+                            "transcript": "Why is it that both developers and it orgs look at these and find them really valuable.",
+                            "_id": "6717f1d53839c3d4cbd9f919"
+                        },
+                        {
+                            "start_time": 386.72375,
+                            "end_time": 390.225,
+                            "transcript": "So one is portability, right?",
+                            "_id": "6717f1d53839c3d4cbd9f91a"
+                        },
+                        {
+                            "start_time": 390.225,
+                            "end_time": 393.72625000000005,
+                            "transcript": "The classic it worked on my laptop problem.",
+                            "_id": "6717f1d53839c3d4cbd9f91b"
+                        },
+                        {
+                            "start_time": 393.72625000000005,
+                            "end_time": 397.2275,
+                            "transcript": "One of the great things about containers is self contained pun intended and you see in there, I've got everything I need to go run this piece of code.",
+                            "_id": "6717f1d53839c3d4cbd9f91c"
+                        },
+                        {
+                            "start_time": 397.2275,
+                            "end_time": 400.72875,
+                            "transcript": "And when I put it somewhere else, it has everything it needs to run just like it did where I had it before.",
+                            "_id": "6717f1d53839c3d4cbd9f91d"
+                        },
+                        {
+                            "start_time": 400.72875,
+                            "end_time": 404.23,
+                            "transcript": "It's an amazing piece of of functionality that comes with containers",
+                            "_id": "6717f1d53839c3d4cbd9f91e"
+                        },
+                        {
+                            "start_time": 404.73,
+                            "end_time": 407.784,
+                            "transcript": "from an infrastructure efficiency perspective, they're really light, right?",
+                            "_id": "6717f1d53839c3d4cbd9f91f"
+                        },
+                        {
+                            "start_time": 407.784,
+                            "end_time": 410.838,
+                            "transcript": "It's easy to start up and stop containers.",
+                            "_id": "6717f1d53839c3d4cbd9f920"
+                        },
+                        {
+                            "start_time": 410.838,
+                            "end_time": 413.892,
+                            "transcript": "It's easy to pack them in, right?",
+                            "_id": "6717f1d53839c3d4cbd9f921"
+                        },
+                        {
+                            "start_time": 413.892,
+                            "end_time": 416.946,
+                            "transcript": "So you get a tighter bin packing and more efficient use of the resources that you have.",
+                            "_id": "6717f1d53839c3d4cbd9f922"
+                        },
+                        {
+                            "start_time": 416.946,
+                            "end_time": 420,
+                            "transcript": "So there's a bunch of strength in containers in those regards.",
+                            "_id": "6717f1d53839c3d4cbd9f923"
+                        },
+                        {
+                            "start_time": 420.54,
+                            "end_time": 426.25,
+                            "transcript": "Another thing from an operations perspective, it's back to what is undifferentiated, heavy lifting and where do you want to spend your time?",
+                            "_id": "6717f1d53839c3d4cbd9f924"
+                        },
+                        {
+                            "start_time": 426.25,
+                            "end_time": 431.96000000000004,
+                            "transcript": "Do you want to manage OS images?",
+                            "_id": "6717f1d53839c3d4cbd9f925"
+                        },
+                        {
+                            "start_time": 431.96000000000004,
+                            "end_time": 437.67,
+                            "transcript": "Because there's a lot of work involved in that containers allow you to kind of take another half step back from that, focus on managing your application, your content in your container and not the rest of the components in that stack.",
+                            "_id": "6717f1d53839c3d4cbd9f926"
+                        },
+                        {
+                            "start_time": 437.67,
+                            "end_time": 443.38,
+                            "transcript": "And so it drives the savings from an operational perspective as well.",
+                            "_id": "6717f1d53839c3d4cbd9f927"
+                        },
+                        {
+                            "start_time": 444.739,
+                            "end_time": 449.29319999999996,
+                            "transcript": "If we look at Kubernetes, what made Kubernetes successful?",
+                            "_id": "6717f1d53839c3d4cbd9f928"
+                        },
+                        {
+                            "start_time": 449.29319999999996,
+                            "end_time": 453.8474,
+                            "transcript": "I'll just declare now, I think it's been very successful.",
+                            "_id": "6717f1d53839c3d4cbd9f929"
+                        },
+                        {
+                            "start_time": 453.8474,
+                            "end_time": 458.4016,
+                            "transcript": "So when you start moving into containers, you start building microservice based architectures, you start getting a lot of containers.",
+                            "_id": "6717f1d53839c3d4cbd9f92a"
+                        },
+                        {
+                            "start_time": 458.4016,
+                            "end_time": 462.9558,
+                            "transcript": "And so when you get enough of them, you get sprawl, right?",
+                            "_id": "6717f1d53839c3d4cbd9f92b"
+                        },
+                        {
+                            "start_time": 462.9558,
+                            "end_time": 467.51,
+                            "transcript": "Some somehow you need to orchestrate all of these containers and you need to drive consistent deployment mechanisms for those containers.",
+                            "_id": "6717f1d53839c3d4cbd9f92c"
+                        },
+                        {
+                            "start_time": 468.04,
+                            "end_time": 470.68666666666667,
+                            "transcript": "That's where Kubernetes came to the forefront.",
+                            "_id": "6717f1d53839c3d4cbd9f92d"
+                        },
+                        {
+                            "start_time": 470.68666666666667,
+                            "end_time": 473.33333333333337,
+                            "transcript": "One of the key facets Kubernetes, right?",
+                            "_id": "6717f1d53839c3d4cbd9f92e"
+                        },
+                        {
+                            "start_time": 473.33333333333337,
+                            "end_time": 475.98,
+                            "transcript": "I can go and have a declarative model",
+                            "_id": "6717f1d53839c3d4cbd9f92f"
+                        },
+                        {
+                            "start_time": 476.589,
+                            "end_time": 480.604,
+                            "transcript": "that gets reconciled.",
+                            "_id": "6717f1d53839c3d4cbd9f930"
+                        },
+                        {
+                            "start_time": 480.604,
+                            "end_time": 484.61899999999997,
+                            "transcript": "I can tell the system, this is how I want this set of containers to behave.",
+                            "_id": "6717f1d53839c3d4cbd9f931"
+                        },
+                        {
+                            "start_time": 484.61899999999997,
+                            "end_time": 488.634,
+                            "transcript": "This is the scaling I want for them and the system monitors and keeps track of and continues to reconcile changes in that behavior for you over time.",
+                            "_id": "6717f1d53839c3d4cbd9f932"
+                        },
+                        {
+                            "start_time": 488.634,
+                            "end_time": 492.649,
+                            "transcript": "It's a very powerful piece of the model consistency.",
+                            "_id": "6717f1d53839c3d4cbd9f933"
+                        },
+                        {
+                            "start_time": 492.649,
+                            "end_time": 496.664,
+                            "transcript": "Another major component when you look at Kubernetes is the API consistency regardless of where you're running Kubernetes.",
+                            "_id": "6717f1d53839c3d4cbd9f934"
+                        },
+                        {
+                            "start_time": 496.664,
+                            "end_time": 500.679,
+                            "transcript": "One of the strengths of kubernetes open source",
+                            "_id": "6717f1d53839c3d4cbd9f935"
+                        },
+                        {
+                            "start_time": 501.76,
+                            "end_time": 505.424,
+                            "transcript": "at API.",
+                            "_id": "6717f1d53839c3d4cbd9f936"
+                        },
+                        {
+                            "start_time": 505.424,
+                            "end_time": 509.088,
+                            "transcript": "If I'm running Kubernetes on Prem, maybe you're running kubernetes yourself in EC2, maybe you're using one of the products like Eks or Eks.",
+                            "_id": "6717f1d53839c3d4cbd9f937"
+                        }
+                    ],
+                    "segment_number": 1,
+                    "segment_total": 6,
+                    "is_visible": 1,
+                    "status": 0,
+                    "createdAt": "2024-10-22T18:41:25.678Z",
+                    "updatedAt": "2024-10-23T03:00:51.255Z",
+                    "__v": 0
+                },
+                "bookmark": "true",
+                "status": 0,
+                "createdAt": "2024-10-23T04:23:31.269Z",
+                "updatedAt": "2024-10-23T04:23:31.269Z",
+                "__v": 0
+            }
+        ],
+        "currentPage": 1,
+        "currentCount": 1,
+        "totalPages": 1,
+        "totalCount": 1
+    }
+}

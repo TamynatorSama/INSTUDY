@@ -75,7 +75,7 @@ class _CustomButtonState extends State<CustomButton> {
                   borderRadius: BorderRadius.circular(4)
                 ),
                 color: widget.isDisactivated
-                    ? AppColors.accentColor
+                    ? AppColors.textColorDark2
                     : widget.backgroundColor ?? AppColors.primaryColor),
             child: isLoading
                 ? SpinKitThreeBounce(
