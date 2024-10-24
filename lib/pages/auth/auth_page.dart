@@ -98,7 +98,7 @@ class _AuthPageState extends State<AuthPage>
             ),
             const Spacer(),
             Expanded(
-              flex: 3,
+              flex: 4,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                     maxWidth: MediaQuery.sizeOf(context).width * 0.75),

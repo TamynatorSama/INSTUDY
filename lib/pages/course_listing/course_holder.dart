@@ -138,7 +138,7 @@ class _CourseContentHolderState extends State<CourseContentHolder> {
                       visualDensity: VisualDensity.compact,
                       onPressed: () {
                         if (widget.video == null) return;
-                        openMoreOptions(context,listingModel: widget.video!);
+                        openMoreOptions(context, listingModel: widget.video!);
                       },
                       icon: SvgPicture.asset("assets/icons/ellipse.svg")),
                 ],
@@ -232,7 +232,14 @@ class _CourseContentHolderState extends State<CourseContentHolder> {
                                           ),
                                         );
                                 }),
-                              )
+                              ),
+                              if (_controller.value.isBuffering)
+                                const Align(
+                                  alignment: Alignment.center,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                )
                             ],
                           ),
                         ),
