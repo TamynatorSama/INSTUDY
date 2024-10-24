@@ -3,14 +3,15 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:instudy/models/quiz.dart';
 import 'package:instudy/usables/custom_btn.dart';
 import 'package:instudy/utils/app_colors.dart';
 
-Future<bool?> showAnswer(BuildContext context) async {
+Future<bool?> showAnswer(BuildContext context,
+    {required Option chosenOption, required Option answer}) async {
   return await showAnimatedDialog(
       barrierDismissible: true,
       animationType: DialogTransitionType.scale,
-      
       curve: Curves.fastOutSlowIn,
       duration: const Duration(milliseconds: 900),
       context: context,
@@ -26,7 +27,7 @@ Future<bool?> showAnswer(BuildContext context) async {
                       borderRadius: BorderRadius.circular(16)),
                   insetPadding: const EdgeInsets.symmetric(horizontal: 24),
                   backgroundColor: Colors.white,
-                  child: const PopQuizAnswer(),
+                  child: PopQuizAnswer(chosenOption: chosenOption,answer: answer,),
                 ),
               ),
             ),
@@ -34,7 +35,12 @@ Future<bool?> showAnswer(BuildContext context) async {
 }
 
 class PopQuizAnswer extends StatefulWidget {
-  const PopQuizAnswer({super.key});
+  final Option chosenOption;
+  final Option answer;
+  const PopQuizAnswer(
+      {super.key,
+      required this.chosenOption,
+      required this.answer});
 
   @override
   State<PopQuizAnswer> createState() => _PopQuizAnswerState();
@@ -45,20 +51,22 @@ class _PopQuizAnswerState extends State<PopQuizAnswer> {
   Widget build(BuildContext context) {
     return IntrinsicHeight(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0,),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 15.0,
+        ),
         child: Column(
           children: [
             const Gap(15),
             Align(
               alignment: Alignment.centerRight,
               child: IconButton(
-                              visualDensity: VisualDensity.compact,
-                              onPressed: () =>Navigator.pop(context),
-                              icon: SvgPicture.asset(
-                                "assets/icons/close.svg",
-                                width: 24,
-                              ),
-                            ),
+                visualDensity: VisualDensity.compact,
+                onPressed: () => Navigator.pop(context),
+                icon: SvgPicture.asset(
+                  "assets/icons/close.svg",
+                  width: 24,
+                ),
+              ),
             ),
             const Gap(10),
             Container(
@@ -99,13 +107,22 @@ class _PopQuizAnswerState extends State<PopQuizAnswer> {
             const Gap(24),
             const Divider(),
             const Gap(24),
-            SvgPicture.asset("assets/icons/check_filled.svg"),
+            SvgPicture.asset(widget.chosenOption.answer? "assets/icons/correct.svg":"assets/icons/wrong.svg"),
             const Gap(24),
-            Text("Correct.",style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 14,color: const Color(0xff08A051)),),
+            Text(
+              widget.chosenOption.answer? "Correct.":"Incorrect",
+              style: Theme.of(context)
+                  .textTheme
+                  .displayMedium
+                  ?.copyWith(fontSize: 14, color: const Color(0xff08A051)),
+            ),
             const Gap(24),
-            Text("Ans: B. Diamond",style: Theme.of(context).textTheme.bodyLarge,),
+            Text(
+              "Ans: ${widget.answer.optionLetter.toUpperCase()}. ${widget.answer.optionText}",
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
             const Gap(24),
-            const CustomButton(text: "Next Question") ,
+            CustomButton(text: "Close",onTap: ()=>Navigator.pop(context)),
             const Gap(32)
           ],
         ),
@@ -114,21 +131,24 @@ class _PopQuizAnswerState extends State<PopQuizAnswer> {
   }
 }
 
-Widget _quizOptions(BuildContext context,{required String optionIndex,required String value}) =>Container(
-  padding: const EdgeInsets.symmetric(horizontal:10,vertical: 8),
-  constraints: BoxConstraints(minWidth: 100,maxHeight: MediaQuery.of(context).size.width - ((2*24)+30)),
-  decoration: const ShapeDecoration(shape: StadiumBorder(
-    
-  ),color: Color(0xffF7F7F7)),
-  child: 
-  Text.rich(TextSpan(
-    children: [
-      TextSpan(
-        text: "$optionIndex. ",
-        style: Theme.of(context).textTheme.displaySmall?.copyWith(fontSize: 12,color: AppColors.textColorDark2)
-      ),
-      TextSpan(
-        text: value
-      )
-    ],style: Theme.of(context).textTheme.displaySmall?.copyWith(fontSize: 12)
-  )));
+Widget _quizOptions(BuildContext context,
+        {required String optionIndex, required String value}) =>
+    Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        constraints: BoxConstraints(
+            minWidth: 100,
+            maxHeight: MediaQuery.of(context).size.width - ((2 * 24) + 30)),
+        decoration: const ShapeDecoration(
+            shape: StadiumBorder(), color: Color(0xffF7F7F7)),
+        child: Text.rich(TextSpan(
+            children: [
+              TextSpan(
+                  text: "$optionIndex. ",
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                      fontSize: 12, color: AppColors.textColorDark2)),
+              TextSpan(text: value)
+            ],
+            style: Theme.of(context)
+                .textTheme
+                .displaySmall
+                ?.copyWith(fontSize: 12))));

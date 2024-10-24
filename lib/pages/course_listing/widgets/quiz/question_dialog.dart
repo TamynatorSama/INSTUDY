@@ -52,7 +52,7 @@ class _PopQuizState extends State<PopQuiz> {
     setState(() {});
     Future.delayed(const Duration(milliseconds: 1000), () {
       Navigator.pop(context);
-      return showAnswer(context);
+      return showAnswer(context,chosenOption: option,answer: widget.popQuiz.options.firstWhere((e)=>e.answer));
     });
   }
 
