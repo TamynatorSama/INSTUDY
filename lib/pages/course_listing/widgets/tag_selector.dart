@@ -21,13 +21,14 @@ Future chooseTag(
       isDismissible: true,
       shape: const RoundedRectangleBorder(),
       builder: (context) => Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom+10),
-        child: IntrinsicHeight(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.viewInsetsOf(context).bottom + 10),
+            child: IntrinsicHeight(
               child: TagSelector(
                 feedID: feedID,
               ),
             ),
-      ));
+          ));
 }
 
 class TagSelector extends StatefulWidget {
@@ -39,7 +40,7 @@ class TagSelector extends StatefulWidget {
 }
 
 class _TagSelectorState extends State<TagSelector> {
-  TextEditingController _tagController = TextEditingController();
+  final TextEditingController _tagController = TextEditingController();
   bool isLoading = false;
   String selectedTag = "";
 
@@ -97,16 +98,18 @@ class _TagSelectorState extends State<TagSelector> {
                       ),
                     ),
                     suffixIcon: InkWell(
-                      onTap: () async{
+                      onTap: () async {
+                        if (isLoading) return;
                         await ref
                             .addTag(context,
-                                feedID: widget.feedID, tag: _tagController.text.trim())
+                                feedID: widget.feedID,
+                                tag: _tagController.text.trim())
                             .then((value) {
-                          
                           if (value) {
                             Navigator.pop(context);
                             showFeedbackSnackbar(context,
-                                message: "video add to ${_tagController.text.trim()}");
+                                message:
+                                    "video add to ${_tagController.text.trim()}");
                           }
                         });
                       },
@@ -115,7 +118,7 @@ class _TagSelectorState extends State<TagSelector> {
                         width: 55,
                         padding: EdgeInsets.symmetric(
                             vertical: isLoading ? 15 : 0, horizontal: 16),
-                        
+
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: AppColors.primaryColor,
@@ -125,12 +128,13 @@ class _TagSelectorState extends State<TagSelector> {
                                     color: AppColors.dividerColor))),
                         child: isLoading
                             ? ConstrainedBox(
-                              constraints: const BoxConstraints(maxHeight: 20),
-                              child: const CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            )
+                                constraints:
+                                    const BoxConstraints(maxHeight: 20),
+                                child: const CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
                             : SvgPicture.string(
                                 """<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none"><path fill="white" d="M4.565 12.407a.75.75 0 1 0-1.13.986zM7.143 16.5l-.565.493a.75.75 0 0 0 1.13 0zm8.422-8.507a.75.75 0 1 0-1.13-.986zm-5.059 3.514a.75.75 0 0 0 1.13.986zm-.834 3.236a.75.75 0 1 0-1.13-.986zm-6.237-1.35l3.143 3.6l1.13-.986l-3.143-3.6zm4.273 3.6l1.964-2.25l-1.13-.986l-1.964 2.25zm3.928-4.5l1.965-2.25l-1.13-.986l-1.965 2.25zm1.965-2.25l1.964-2.25l-1.13-.986l-1.964 2.25z"/><path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m20 7.563l-4.286 4.5M11 16l.429.563l2.143-2.25"/></g></svg>""",
                               ),
@@ -157,17 +161,16 @@ class _TagSelectorState extends State<TagSelector> {
                 ),
                 const Gap(20),
                 Skeletonizer(
-                    enabled: false,
+                    enabled: ref.isLoadingTags && ref.tags.isEmpty,
                     child: Builder(builder: (context) {
-                      List<String> tags = ["Favorite", "Study", "So on"];
-                      //  ref.tags.map((e) => e.tag).toList();
+                      List<String> tags =  ref.isLoadingTags && ref.tags.isEmpty?["Favorite"]:ref.tags.map((e) => e.tag).toList();
                       return Wrap(
                         spacing: 10,
                         runSpacing: 10,
-                        children: List.generate(3,
-                            // tags.length,
+                        children: List.generate(
+                            ref.isLoadingTags && ref.tags.isEmpty?2:tags.length,
                             (index) {
-                          bool selected = selectedTag == tags[index];
+                          bool selected = ref.isLoadingTags && ref.tags.isEmpty ? false:selectedTag == tags[index];
                           return InkWell(
                             onTap: () {
                               setState(() {

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:instudy/models/course_listing_model.dart';
+import 'package:instudy/pages/course_listing/widgets/ask_question.dart';
 import 'package:instudy/pages/course_listing/widgets/content_note.dart';
 import 'package:instudy/pages/course_listing/widgets/content_options.dart';
 import 'package:instudy/provider/dashboard_provider.dart';
@@ -292,7 +293,10 @@ class _CourseContentHolderState extends State<CourseContentHolder> {
                       TextButton(
                         style: const ButtonStyle(
                             padding: WidgetStatePropertyAll(EdgeInsets.all(1))),
-                        onPressed: () {},
+                        onPressed: () {
+                          if (widget.video == null) return;
+                          askQuestion(context, feedID: widget.video!.id);
+                        },
                         child: Text(
                           "? Ask a Question",
                           style: Theme.of(context)
@@ -309,8 +313,13 @@ class _CourseContentHolderState extends State<CourseContentHolder> {
                     children: [
                       SvgPicture.asset("assets/icons/cc.svg"),
                       const Gap(4),
-                      const Text(
-                          "Today we are going to learn about the hardness of ")
+                      Expanded(
+                        child: Text(
+                          widget.video?.transcript.first.transcript ?? "",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
                     ],
                   ),
                   const Gap(4),

@@ -11,6 +11,7 @@ class CustomButton extends StatefulWidget {
   final Color? backgroundColor;
   final Color? textColor;
   final double? width;
+  final bool showLoader;
   final Border? customBorder;
   final bool isDisactivated;
   final double? iconSpacing;
@@ -21,6 +22,7 @@ class CustomButton extends StatefulWidget {
     this.iconSpacing,
     this.customBorder,
     this.icon,
+    this.showLoader = true,
     this.width,
     this.isDisactivated = false,
     this.backgroundColor,
@@ -39,7 +41,7 @@ class _CustomButtonState extends State<CustomButton> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        if (widget.isDisactivated||isLoading) return;
+        if (widget.isDisactivated || isLoading) return;
         FocusScope.of(context).unfocus();
         tapped = false;
         isLoading = true;
@@ -72,12 +74,11 @@ class _CustomButtonState extends State<CustomButton> {
             alignment: Alignment.center,
             decoration: ShapeDecoration(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4)
-                ),
+                    borderRadius: BorderRadius.circular(4)),
                 color: widget.isDisactivated
                     ? AppColors.textColorDark2
                     : widget.backgroundColor ?? AppColors.primaryColor),
-            child: isLoading
+            child: isLoading && widget.showLoader
                 ? SpinKitThreeBounce(
                     size: 20,
                     itemBuilder: (context, index) => const CircleAvatar(
@@ -89,7 +90,12 @@ class _CustomButtonState extends State<CustomButton> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(widget.text,
-                          style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12,color: widget.textColor ?? Colors.white)),
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium
+                              ?.copyWith(
+                                  fontSize: 12,
+                                  color: widget.textColor ?? Colors.white)),
                       if (widget.icon != null) ...[
                         Gap(widget.iconSpacing ?? 5),
                         SvgPicture.asset(

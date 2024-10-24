@@ -43,16 +43,33 @@ class DashboardRepo {
     });
   }
 
-  Future<RepositoryResult<Quiz?>> generateQuiz(
-      {required String feedID}) async {
-    return await AppNetworkRequest().makeRequest(
-        "secure/feeds/generate-quiz/$feedID").then((value) {
-          if(value.isSuccessful){
-            return RepositoryResult(
+  Future<RepositoryResult<Quiz?>> generateQuiz({required String feedID}) async {
+    return await AppNetworkRequest()
+        .makeRequest("secure/feeds/generate-quiz/$feedID")
+        .then((value) {
+      if (value.isSuccessful) {
+        return RepositoryResult(
+            message: value.result["message"] ?? "",
+            status: true,
+            result: Quiz.fromJson(value.result["data"]));
+      }
+      return RepositoryResult(
           message: value.result["message"] ?? "",
-          status:true,
-          result: Quiz.fromJson(value.result["data"]));
-          }
+          status: value.isSuccessful,
+          result: null);
+    });
+  }
+
+  Future<RepositoryResult<String?>> askQuestion(
+      {required String feedID, required String question}) async {
+    return await AppNetworkRequest().makeRequest("secure/feeds/ask/$feedID",
+        payload: {"question": question}).then((value) {
+      if (value.isSuccessful) {
+        return RepositoryResult(
+            message: value.result["message"] ?? "",
+            status: true,
+            result: value.result["data"]);
+      }
       return RepositoryResult(
           message: value.result["message"] ?? "",
           status: value.isSuccessful,
@@ -62,31 +79,25 @@ class DashboardRepo {
 
   Future<RepositoryResult> addTag(
       {required String feedID, required String tag}) async {
-    return await AppNetworkRequest().makeRequest(
-        "secure/feeds/add-tag/$feedID",
-        requestType: HttpRequestType.post,
-        payload: {"tag": tag}).then((value) {
+    return await AppNetworkRequest().makeRequest("secure/feeds/add-tag/$feedID",
+        requestType: HttpRequestType.post, payload: {"tag": tag}).then((value) {
       return RepositoryResult(
           message: value.result["message"] ?? "",
           status: value.isSuccessful,
           result: null);
     });
   }
-
-
 
   Future<RepositoryResult> addBookmark(
       {required String feedID, required bool status}) async {
     return await AppNetworkRequest().makeRequest(
         "secure/feeds/add-bookmark/$feedID",
         requestType: HttpRequestType.post,
-        payload: {"status": status ?1:0}).then((value) {
+        payload: {"status": status ? 1 : 0}).then((value) {
       return RepositoryResult(
           message: value.result["message"] ?? "",
           status: value.isSuccessful,
           result: null);
     });
   }
-
-  
 }

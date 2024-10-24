@@ -232,6 +232,8 @@ Widget _buildTags(BuildContext context, {required Tags tag}) => Column(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12))),
             child: GridView.custom(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverQuiltedGridDelegate(
                 crossAxisCount: 2,
                 mainAxisSpacing: 4,
@@ -241,7 +243,7 @@ Widget _buildTags(BuildContext context, {required Tags tag}) => Column(
                   const QuiltedGridTile(2, 2),
                   const QuiltedGridTile(1, 1),
                   const QuiltedGridTile(1, 1),
-                  const QuiltedGridTile(1, 2),
+                  const QuiltedGridTile(2, 2),
                 ],
               ),
               childrenDelegate: SliverChildBuilderDelegate(
