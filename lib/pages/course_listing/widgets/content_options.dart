@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:instudy/models/course_listing_model.dart';
-import 'package:instudy/models/quiz.dart';
 import 'package:instudy/pages/course_listing/widgets/quiz/question_dialog.dart';
 import 'package:instudy/pages/course_listing/widgets/tag_selector.dart';
 import 'package:instudy/pages/videos/class_video_single_view.dart';

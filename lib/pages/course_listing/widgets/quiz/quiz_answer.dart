@@ -107,19 +107,20 @@ class _PopQuizAnswerState extends State<PopQuizAnswer> {
             const Gap(24),
             const Divider(),
             const Gap(24),
-            SvgPicture.asset(widget.chosenOption.answer? "assets/icons/correct.svg":"assets/icons/wrong.svg"),
+            SvgPicture.asset(widget.chosenOption.answer? "assets/icons/correct.svg":"assets/icons/wrong.svg",width: 60,),
             const Gap(24),
             Text(
               widget.chosenOption.answer? "Correct.":"Incorrect",
               style: Theme.of(context)
                   .textTheme
                   .displayMedium
-                  ?.copyWith(fontSize: 14, color: const Color(0xff08A051)),
+                  ?.copyWith(fontSize: 14, color:widget.chosenOption.answer? const Color(0xff08A051):Colors.red),
             ),
             const Gap(24),
             Text(
               "Ans: ${widget.answer.optionLetter.toUpperCase()}. ${widget.answer.optionText}",
               style: Theme.of(context).textTheme.bodyLarge,
+              textAlign: TextAlign.center,
             ),
             const Gap(24),
             CustomButton(text: "Close",onTap: ()=>Navigator.pop(context)),

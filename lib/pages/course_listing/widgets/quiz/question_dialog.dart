@@ -47,8 +47,7 @@ class _PopQuizState extends State<PopQuiz> {
   String value = "";
 
   clickAnswer(Option option) {
-    value = option.optionLetter ;
-    print(value);
+    value = option.optionLetter.toUpperCase();
     setState(() {});
     Future.delayed(const Duration(milliseconds: 1000), () {
       Navigator.pop(context);
@@ -112,6 +111,7 @@ class _PopQuizState extends State<PopQuiz> {
               children: [
                 Wrap(
                     spacing: 24,
+                    runSpacing: 10,
                     children: List.generate(
                       widget.popQuiz.options.length.clamp(0, 2),
                       (index) {
@@ -124,6 +124,7 @@ class _PopQuizState extends State<PopQuiz> {
                     )),
                 Wrap(
                     spacing: 24,
+                    runSpacing: 10,
                     children: List.generate(
                       widget.popQuiz.options.sublist(2).length,
                       (index) {
